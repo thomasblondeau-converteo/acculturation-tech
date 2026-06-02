@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Voyage de la Donnée — Converteo Tech Academy</title>
+<!-- SCORM 1.2 runtime: discovers the LMS API and exposes window.ConverteoSCORM -->
+<script src="../scorm/scorm-api.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div id="progress-bar" style="width:0%"></div>
+
+<!-- ===== Gamification HUD: global XP, completion ring, module badges ===== -->
+<div id="gx-hud" aria-label="Progression d'apprentissage">
+  <div class="gx-hud-ring">
+    <svg width="42" height="42" viewBox="0 0 42 42">
+      <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="4"></circle>
+      <circle id="gx-hud-arc" cx="21" cy="21" r="17" fill="none" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="106.8"></circle>
+    </svg>
+    <div class="pct" id="gx-hud-pct">0%</div>
+  </div>
+  <div class="gx-hud-xp"><span class="n" id="gx-hud-xp">0</span><span class="l">XP</span></div>
+  <div class="gx-hud-badges" id="gx-hud-badges"></div>
+</div>
+<div class="gx-toast" id="gx-toast"></div>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero">
+      <img class="nav-logo-mark" src="https://i.postimg.cc/4xkbRghj/DEKUPLE-Logos-RVB-Converteo-blanc-WEB.png" alt="Converteo">
+      
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#data">La Donnée</a>
+      <a class="nav-link" href="#storage">Stockage</a>
+      <a class="nav-link" href="#api">APIs</a>
+      <a class="nav-link" href="#etl">Pipeline ETL</a>
+      <a class="nav-link" href="#ai">IA</a>
+      <a class="nav-link" href="#agents">Agents</a>
+      <a class="nav-link" href="#rag">RAG & MCP</a>
+      <a class="nav-link" href="#business">Business</a>
+      <a class="nav-link cta" href="#quiz">Quiz ✦</a>
+    </div>
+    <div class="nav-meta">
+      <div class="nav-meta-dot"></div>
+      <span id="reading-pct">0%</span> lu
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-teal-bar"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block;animation:pulse-dot 2s infinite;"></span>Converteo · Tech Academy — Module 1</div>
+      <h1 class="hero-title">Le Voyage<br>de la <span>Donnée</span></h1>
+      <p class="hero-sub">De la collecte brute à l'intelligence artificielle agentique — comprendre l'écosystème tech sans jargon pour devenir un consultant tech-aware.</p>
+      <div class="hero-badges">
+        <span class="hero-chip">● <span class="val">5</span> Modules</span>
+        <span class="hero-chip">⏱ <span class="val">60 min</span></span>
+        <span class="hero-chip">✓ <span class="val">Certification</span></span>
+        <span class="hero-chip">👥 <span class="val">Tous niveaux</span></span>
+      </div>
+      <button class="hero-cta" onclick="document.getElementById('data').scrollIntoView({behavior:'smooth'})">Commencer le parcours →</button>
+    </div>
+    <div>
+      <div class="hero-terminal">
+        <div class="terminal-bar">
+          <div class="tdot tdot-r"></div><div class="tdot tdot-y"></div><div class="tdot tdot-g"></div>
+          <span class="tfile">pipeline.log</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="tp">$</span> <span class="th">extract</span> <span class="ts">--source=CRM --format=json</span></div>
+          <div class="ts">✓ 48,291 records extraits (Salesforce)</div>
+          <div style="margin-top:6px;"><span class="tp">$</span> <span class="th">transform</span> <span class="ts">--clean --dedupe</span></div>
+          <div class="ts">⚡ Suppression de 1,204 doublons...</div>
+          <div class="ts">⚡ Normalisation des formats dates...</div>
+          <div style="margin-top:6px;"><span class="tp">$</span> <span class="th">load</span> <span class="ts">--target=snowflake</span></div>
+          <div class="tok">✓ Pipeline OK — 47,087 lignes chargées</div>
+          <div style="margin-top:8px;"><span class="tp">$</span> <span class="tcur"></span></div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="n">90%</div><div class="l">infras cloud-first</div></div>
+        <div class="hero-stat"><div class="n">×10</div><div class="l">gain avec l'IA agentique</div></div>
+        <div class="hero-stat"><div class="n">5</div><div class="l">étapes cycle de vie</div></div>
+        <div class="hero-stat"><div class="n">∞</div><div class="l">possibilités</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 01 — LA DONNÉE -->
+<section id="data" class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Module 01 — Fondations</div>
+      <h2 class="section-title">La Donnée : <span>le carburant de tout</span></h2>
+      <p class="section-sub">Avant de parler IA ou pipeline, comprendre ce qu'est vraiment une donnée — et pourquoi seule, elle ne vaut rien.</p>
+    </div>
+    <div class="reveal rv1" style="margin-bottom:36px;max-width:680px;">
+      <div class="callout">
+        <div class="callout-label">Problème Business</div>
+        <div class="callout-title">"Nos données clients existent depuis 5 ans — mais on ne sait toujours pas quel canal génère nos meilleurs clients."</div>
+        <p>La donnée brute ne vaut rien seule. Sa valeur naît de la <strong>chaîne complète</strong> : collecte → stockage → traitement → analyse → action.</p>
+      </div>
+    </div>
+    <div class="reveal rv2" style="margin-bottom:36px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">Les 3 types de données</h3>
+      <div class="data-type-tabs">
+        <div class="dt-tab active" onclick="selectTab('structured')">⊞ Structurée</div>
+        <div class="dt-tab" onclick="selectTab('semi')">⊟ Semi-structurée</div>
+        <div class="dt-tab" onclick="selectTab('unstructured')">⊘ Non structurée</div>
+      </div>
+      <div class="dt-panel active" id="tab-structured">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+          <div>
+            <span class="badge badge-teal" style="margin-bottom:10px;">Structurée</span>
+            <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">Format tabulaire, schéma fixe</h4>
+            <p style="font-size:13px;color:var(--gray);line-height:1.65;margin-bottom:12px;">Colonnes prédéfinies, types déclarés, requêtes SQL directes. Garanties d'intégrité strictes.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="badge badge-navy">Excel / CSV</span><span class="badge badge-navy">PostgreSQL</span><span class="badge badge-navy">Clics pub</span><span class="badge badge-navy">Transactions</span></div>
+          </div>
+          <div class="code-block"><div class="cmt"># Exemple SQL</div><br><div><span class="kw">SELECT</span> user_id, email, revenue</div><div><span class="kw">FROM</span> orders</div><div><span class="kw">WHERE</span> date > <span class="str">'2024-01-01'</span></div></div>
+        </div>
+      </div>
+      <div class="dt-panel" id="tab-semi">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+          <div>
+            <span class="badge badge-gold" style="margin-bottom:10px;">Semi-structurée</span>
+            <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">Format flexible mais organisé</h4>
+            <p style="font-size:13px;color:var(--gray);line-height:1.65;margin-bottom:12px;">Structure présente mais variable. Clé/valeur, hiérarchique. Idéal pour les échanges entre systèmes.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="badge badge-navy">JSON</span><span class="badge badge-navy">XML</span><span class="badge badge-navy">Emails</span><span class="badge badge-navy">Logs apps</span></div>
+          </div>
+          <div class="code-block"><div class="cmt"># Exemple JSON API</div><br><div>{</div><div>&nbsp;&nbsp;<span class="str">"user"</span>: <span class="str">"j.dupont"</span>,</div><div>&nbsp;&nbsp;<span class="str">"event"</span>: <span class="str">"add_to_cart"</span>,</div><div>&nbsp;&nbsp;<span class="str">"ts"</span>: <span class="num">1718208000</span></div><div>}</div></div>
+        </div>
+      </div>
+      <div class="dt-panel" id="tab-unstructured">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+          <div>
+            <span class="badge badge-red" style="margin-bottom:10px;">Non structurée</span>
+            <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;">80 % des données mondiales</h4>
+            <p style="font-size:13px;color:var(--gray);line-height:1.65;margin-bottom:12px;">Aucun format imposé. Impossible à requêter en SQL. Nécessite l'IA pour être exploitée.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;"><span class="badge badge-navy">Images</span><span class="badge badge-navy">Vidéos</span><span class="badge badge-navy">Avis clients</span><span class="badge badge-navy">Contrats PDF</span></div>
+          </div>
+          <div style="background:var(--gray-lt);border:1.5px solid var(--gray-bdr);border-radius:10px;padding:20px;">
+            <div style="font-size:11px;font-weight:700;color:var(--gray);letter-spacing:1px;margin-bottom:12px;text-transform:uppercase;">Exemples terrain</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="font-size:12px;color:var(--gray-dk);background:#fff;padding:8px 12px;border-radius:6px;border:1px solid var(--gray-bdr);">🖼 Photos produits e-commerce (Fnac)</div>
+              <div style="font-size:12px;color:var(--gray-dk);background:#fff;padding:8px 12px;border-radius:6px;border:1px solid var(--gray-bdr);">💬 Verbatims avis clients (Trustpilot)</div>
+              <div style="font-size:12px;color:var(--gray-dk);background:#fff;padding:8px 12px;border-radius:6px;border:1px solid var(--gray-bdr);">🎙 Enregistrements appels support</div>
+              <div style="font-size:12px;color:var(--gray-dk);background:#fff;padding:8px 12px;border-radius:6px;border:1px solid var(--gray-bdr);">📄 Contrats et CGV en PDF</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv3">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px;">Le cycle de vie de la donnée</h3>
+      <p style="font-size:13px;color:var(--gray);margin-bottom:28px;">Survolez chaque étape pour comprendre ce qui se passe.</p>
+      <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:16px;padding:32px;">
+        <div class="lifecycle-grid">
+          <div class="lc-step"><div class="lc-icon">📥</div><div class="lc-label">Collecte</div><div class="lc-sub">Formulaire, API, clic, capteur, IoT</div></div>
+          <div class="lc-step"><div class="lc-icon">🗄</div><div class="lc-label">Stockage</div><div class="lc-sub">Data Lake, Warehouse, BDD</div></div>
+          <div class="lc-step"><div class="lc-icon">⚙️</div><div class="lc-label">Traitement</div><div class="lc-sub">ETL, nettoyage, normalisation</div></div>
+          <div class="lc-step"><div class="lc-icon">📊</div><div class="lc-label">Analyse</div><div class="lc-sub">Dashboard, modèle ML, BI</div></div>
+          <div class="lc-step"><div class="lc-icon">🚀</div><div class="lc-label">Action</div><div class="lc-sub">Décision, automatisation, IA</div></div>
+        </div>
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--gray-bdr);display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="padding:14px 18px;background:var(--teal-lt);border:1px solid rgba(0,178,178,.2);border-radius:10px;">
+            <div style="font-size:10px;font-weight:700;color:var(--teal-dk);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Batch Processing</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Traitement différé par lots</div>
+            <div style="font-size:12px;color:var(--gray);">Ex : rapport généré chaque nuit à 3h sur les commandes du jour.</div>
+          </div>
+          <div style="padding:14px 18px;background:#EEF2FF;border:1px solid rgba(99,102,241,.2);border-radius:10px;">
+            <div style="font-size:10px;font-weight:700;color:var(--navy);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Streaming / Temps réel</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Traitement instantané</div>
+            <div style="font-size:12px;color:var(--gray);">Ex : détection de fraude bancaire en moins de 200 ms.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ============ EXERCISE · MODULE 01 · Data classification ============ -->
+    <div class="gx-ex reveal" id="gx-ex1" data-gx-module="data">
+      <div class="gx-ex-head">
+        <div class="gx-ex-ico">🎯</div>
+        <div class="gx-ex-titles">
+          <div class="gx-ex-eyebrow">Exercice interactif · 2 min</div>
+          <div class="gx-ex-title">Classez la donnée : structurée, semi ou non structurée ?</div>
+        </div>
+        <div class="gx-ex-score" id="gx-ex1-score">0 / 6</div>
+      </div>
+      <div class="gx-ex-body">
+        <p class="gx-instr">Glissez-déposez chaque exemple dans la bonne catégorie — ou cliquez pour le sélectionner puis cliquez sur une zone (tactile).</p>
+        <div class="gx-hint"><svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/></svg> Glissez les blocs dans la bonne zone</div>
+        <div class="gx-pool gx-droppool" id="gx-ex1-pool"></div>
+        <div class="gx-zones cols-3" style="margin-top:18px;">
+          <div class="gx-zone" data-cat="structured">
+            <div class="gx-zone-title">📊 Structurée</div>
+            <div class="gx-zone-sub">Tableaux, lignes & colonnes, schéma fixe</div>
+            <div class="gx-zone-items" data-zone="structured"></div>
+          </div>
+          <div class="gx-zone" data-cat="semi">
+            <div class="gx-zone-title">🔖 Semi-structurée</div>
+            <div class="gx-zone-sub">JSON, XML, e-mails — structure souple</div>
+            <div class="gx-zone-items" data-zone="semi"></div>
+          </div>
+          <div class="gx-zone" data-cat="unstructured">
+            <div class="gx-zone-title">🖼 Non structurée</div>
+            <div class="gx-zone-sub">Images, audio, texte libre, vidéo</div>
+            <div class="gx-zone-items" data-zone="unstructured"></div>
+          </div>
+        </div>
+        <div class="gx-actions">
+          <button class="gx-btn" id="gx-ex1-check" disabled onclick="GX.ex1.check()">Valider mon classement</button>
+          <button class="gx-btn gx-btn-ghost" onclick="GX.ex1.reset()">Recommencer</button>
+        </div>
+        <div class="gx-fb" id="gx-ex1-fb"></div>
+        <div class="gx-earned" id="gx-ex1-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Maître de la Donnée</b><br>+50 XP · Module 01 validé</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MODULE 02 — STOCKAGE -->
+<section id="storage" class="section section-dark" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-100px;top:-100px;width:350px;height:350px;background:var(--purple);border-radius:50%;opacity:.15;pointer-events:none;"></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--teal);"></div>
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Module 02 — Architectures</div>
+      <h2 class="section-title">Stockage & <span>Architectures</span></h2>
+      <p class="section-sub">D'où viennent les données et où vivent-elles ? Comprendre les différences entre les grandes familles de stockage.</p>
+    </div>
+    <div class="reveal rv1" style="margin-bottom:36px;max-width:680px;">
+      <div style="border-left:4px solid var(--teal);background:rgba(0,178,178,.08);border-radius:0 10px 10px 0;padding:16px 20px;">
+        <div style="font-size:10px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Contexte Client — Fnac Darty</div>
+        <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">"Nos données sont partout : ERP, e-commerce, mobile, SAV... impossible de les croiser."</div>
+        <p style="font-size:13px;color:#8B8ECA;">Le défi n'est pas de collecter plus — c'est de <strong style="color:#fff;">centraliser intelligemment</strong>.</p>
+      </div>
+    </div>
+    <div class="reveal rv2" style="margin-bottom:32px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">SQL vs NoSQL</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="card-dark">
+          <span class="badge badge-teal" style="margin-bottom:10px;">SQL · Relationnel</span>
+          <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Structure rigide & fiable</div>
+          <p style="font-size:12px;color:#8B8ECA;margin-bottom:12px;">Tables liées, schéma fixe, garanties ACID. Standard pour les données transactionnelles.</p>
+          <div class="code-block" style="background:#232645;"><span class="kw">SELECT</span> user, revenue <span class="kw">FROM</span> orders<br><span class="kw">WHERE</span> date > <span class="str">'2024-01-01'</span></div>
+          <div style="margin-top:10px;font-size:11px;color:#6B6EA8;">Ex : PostgreSQL, MySQL, BigQuery</div>
+        </div>
+        <div class="card-dark">
+          <span class="badge badge-green" style="margin-bottom:10px;">NoSQL · Flexible</span>
+          <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Flexibilité & scalabilité</div>
+          <p style="font-size:12px;color:#8B8ECA;margin-bottom:12px;">Pas de schéma imposé. Idéal pour des données hétérogènes à grande échelle ou en temps réel.</p>
+          <div class="code-block" style="background:#232645;"><span class="kw">db.users.find</span>({<br>&nbsp;&nbsp;<span class="str">"plan"</span>: <span class="str">"premium"</span>,<br>&nbsp;&nbsp;<span class="str">"city"</span>: <span class="str">"Paris"</span><br>})</div>
+          <div style="margin-top:10px;font-size:11px;color:#6B6EA8;">Ex : MongoDB, Firestore, DynamoDB</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv3">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">Data Lake · Data Warehouse · CDP</h3>
+      <div class="storage-cards" id="storage-cards">
+        <div class="storage-card selected" id="sc-lake" onclick="selectStorage('lake')">
+          <div class="sc-head"><div class="sc-ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div><div class="title">Data Lake</div><div class="sub">Stockage brut & flexible</div></div>
+          <div class="sc-body">
+            <div class="sc-row"><span class="dot">●</span><span>Tout y entre, dans tous les formats. Aucun schéma imposé à l'ingestion.</span></div>
+            <div class="sc-row"><span class="dot">●</span><span>Très économique, scalable à l'infini.</span></div>
+            <div class="sc-row"><span class="dot">●</span><span>Point de départ de la plupart des architectures modernes.</span></div>
+          </div>
+          <div class="sc-tools"><span class="badge badge-navy">AWS S3</span><span class="badge badge-navy">Google GCS</span><span class="badge badge-navy">Azure Blob</span></div>
+        </div>
+        <div class="storage-card" id="sc-dw" onclick="selectStorage('dw')">
+          <div class="sc-head"><div class="sc-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-5 9 5v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 9h18"/><path d="M9 20v-6h6v6"/><path d="M12 9v5"/></svg></div><div class="title">Data Warehouse</div><div class="sub">Entrepôt analytique structuré</div></div>
+          <div class="sc-body">
+            <div class="sc-row"><span class="dot">●</span><span>Données nettoyées, modélisées, optimisées pour le reporting.</span></div>
+            <div class="sc-row"><span class="dot">●</span><span>Performances élevées pour les requêtes analytiques complexes.</span></div>
+            <div class="sc-row"><span class="dot">●</span><span>Gouvernance et documentation du schéma.</span></div>
+          </div>
+          <div class="sc-tools"><span class="badge badge-navy">Snowflake</span><span class="badge badge-navy">BigQuery</span><span class="badge badge-navy">Redshift</span></div>
+        </div>
+        <div class="storage-card" id="sc-cdp" onclick="selectStorage('cdp')">
+          <div class="sc-head"><div class="sc-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/><circle cx="12" cy="12" r="10"/></svg></div><div class="title">CDP</div><div class="sub">Customer Data Platform</div></div>
+          <div class="sc-body">
+            <div class="sc-row"><span class="dot">●</span><span>Unification des profils clients cross-canal.</span></div>
+            <div class="sc-row"><span class="dot">●</span><span>Vue 360° client, segmentation temps réel.</span></div>
+            <div class="sc-row"><span class="dot">●</span><span>Connexion directe aux outils marketing.</span></div>
+          </div>
+          <div class="sc-tools"><span class="badge badge-navy">Segment</span><span class="badge badge-navy">Weavenn</span><span class="badge badge-navy">mParticle</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- ============ EXERCISE · MODULE 02 · Storage matching ============ -->
+    <div class="gx-ex gx-on-dark reveal" id="gx-ex2" data-gx-module="storage">
+      <div class="gx-ex-head">
+        <div class="gx-ex-ico">🔗</div>
+        <div class="gx-ex-titles">
+          <div class="gx-ex-eyebrow">Exercice interactif · 2 min</div>
+          <div class="gx-ex-title">Associez chaque besoin métier à la bonne solution</div>
+        </div>
+        <div class="gx-ex-score" id="gx-ex2-score">0 / 5</div>
+      </div>
+      <div class="gx-ex-body">
+        <p class="gx-instr">Glissez chaque besoin métier vers la bonne solution — ou cliquez pour sélectionner puis cliquez sur une zone (tactile).<br><strong style="color:var(--teal);font-size:11px;">⚠ Chaque solution ne peut être utilisée qu'une seule fois.</strong></p>
+        <div class="gx-hint"><svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/></svg> Glissez les besoins dans la bonne colonne</div>
+        <div class="gx-pool gx-droppool" id="gx-ex2-pool"></div>
+        <div class="gx-zones cols-5" style="margin-top:18px;" id="gx-ex2-zones"></div>
+        <div class="gx-actions">
+          <button class="gx-btn" id="gx-ex2-check" disabled onclick="GX.ex2.check()">Vérifier mes choix</button>
+          <button class="gx-btn gx-btn-ghost" onclick="GX.ex2.reset()">Recommencer</button>
+        </div>
+        <div class="gx-fb" id="gx-ex2-fb"></div>
+        <div class="gx-earned" id="gx-ex2-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Architecte Data</b><br>+50 XP · Module 02 validé</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 03 — APIs -->
+<section id="api" class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Module 03 — Connectivité</div>
+      <h2 class="section-title">APIs : <span>les messagers</span> entre systèmes</h2>
+      <p class="section-sub">Comment les applications communiquent-elles entre elles ? Et pourquoi c'est fondamental pour comprendre toute architecture data.</p>
+    </div>
+    <div class="reveal rv1" style="margin-bottom:32px;">
+      <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:16px;padding:28px;">
+        <h3 style="font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:20px;">Comment fonctionne une API ?</h3>
+        <div class="api-flow">
+          <div class="api-node"><div class="icon">💻</div><div class="title">Votre Application</div><div class="sub">ex. Dashboard Converteo</div></div>
+          <div class="api-arrow"><span class="method get-m">GET</span><span class="arrow">→</span><span style="font-size:10px;color:var(--gray);">Requête HTTP</span></div>
+          <div class="api-node highlight"><div class="icon">⚡</div><div class="title" style="color:var(--teal-dk);">API</div><div class="sub">Point d'entrée standardisé</div></div>
+          <div class="api-arrow"><span class="method post-m">200 OK</span><span class="arrow">←</span><span style="font-size:10px;color:var(--gray);">Réponse JSON</span></div>
+          <div class="api-node"><div class="icon">🗄</div><div class="title">Serveur / BDD</div><div class="sub">ex. PostgreSQL</div></div>
+        </div>
+        <div style="margin-top:16px;padding:12px 16px;background:var(--teal-lt);border-radius:8px;font-size:12px;color:var(--gray-dk);">💡 <strong>L'API est un contrat :</strong> elle définit exactement quelles données peuvent être demandées, dans quel format, avec quelles permissions.</div>
+      </div>
+    </div>
+    <div class="reveal rv2" style="margin-bottom:32px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">GET vs POST : les deux gestes fondamentaux</h3>
+      <div class="method-cards">
+        <div class="method-card">
+          <div class="method-head"><span class="method-tag get">GET</span><span class="method-name">Lire une ressource</span></div>
+          <p style="font-size:12px;color:var(--gray);margin-bottom:12px;line-height:1.65;">Je veux <em>obtenir</em> de l'information. Idempotente : peut être appelée N fois sans rien modifier côté serveur.</p>
+          <div class="code-block"><span class="kw">GET</span> /api/v1/clients?id=<span class="num">123</span><br><span class="cmt">→ {"name": "Fnac Darty", "revenue": 4200000}</span></div>
+        </div>
+        <div class="method-card">
+          <div class="method-head"><span class="method-tag post">POST</span><span class="method-name">Créer / Envoyer des données</span></div>
+          <p style="font-size:12px;color:var(--gray);margin-bottom:12px;line-height:1.65;">Je veux <em>envoyer</em> de l'information. Les données sont dans le corps de la requête.</p>
+          <div class="code-block"><span class="kw">POST</span> /api/v1/leads<br>Body: {<span class="str">"email"</span>: <span class="str">"contact@fnac.fr"</span>}<br><span class="cmt">→ 201 Created</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv3">
+      <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:14px;padding:24px;">
+        <h3 style="font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;">Partage temps réel vs échange de fichiers</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">❌ Échange de fichiers (legacy)</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="font-size:12px;color:var(--gray-dk);display:flex;gap:6px;"><span style="color:var(--red);">✗</span>Export CSV manuel chaque lundi matin</div>
+              <div style="font-size:12px;color:var(--gray-dk);display:flex;gap:6px;"><span style="color:var(--red);">✗</span>Données déjà obsolètes à l'arrivée</div>
+              <div style="font-size:12px;color:var(--gray-dk);display:flex;gap:6px;"><span style="color:var(--red);">✗</span>Risques d'erreurs de version et de perte</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--teal-dk);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">✓ API temps réel (moderne)</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="font-size:12px;color:var(--gray-dk);display:flex;gap:6px;"><span style="color:var(--green);">✓</span>Données synchronisées en continu</div>
+              <div style="font-size:12px;color:var(--gray-dk);display:flex;gap:6px;"><span style="color:var(--green);">✓</span>Toujours à jour (latence &lt; 1 seconde)</div>
+              <div style="font-size:12px;color:var(--gray-dk);display:flex;gap:6px;"><span style="color:var(--green);">✓</span>Logs et monitoring intégrés</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ============ EXERCISE · MODULE 03 · API simulator ============ -->
+    <div class="gx-ex reveal" id="gx-ex3" data-gx-module="api">
+      <div class="gx-ex-head">
+        <div class="gx-ex-ico">📡</div>
+        <div class="gx-ex-titles">
+          <div class="gx-ex-eyebrow">Simulateur interactif · 2 min</div>
+          <div class="gx-ex-title">Lancez votre propre requête API</div>
+        </div>
+        <div class="gx-ex-score" id="gx-ex3-score">0 appels</div>
+      </div>
+      <div class="gx-ex-body">
+        <div style="background:rgba(0,178,178,.1);border:1.5px solid rgba(0,178,178,.35);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
+          <div style="font-size:9px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">🎯 Mission à résoudre</div>
+          <p style="font-size:13px;color:var(--text);line-height:1.6;margin-bottom:8px;">Un client vous demande : <strong>"Quel est le segment du client n°123 ?"</strong> Trouvez la réponse via l'API, puis créez un nouvel événement.</p>
+          <div id="gx-ex3-objectives" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <span id="obj-1" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.08);color:#8B8ECA;border:1px solid rgba(255,255,255,.12);">⬜ Lire le segment du client 123</span>
+            <span id="obj-2" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.08);color:#8B8ECA;border:1px solid rgba(255,255,255,.12);">⬜ Créer un événement via POST</span>
+          </div>
+        </div>
+        <p class="gx-instr">Choisissez une méthode, un endpoint et observez la réponse simulée du serveur (statut HTTP + JSON).</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;">
+          <div class="gx-field">
+            <label>Méthode</label>
+            <div class="gx-seg" id="gx-ex3-method">
+              <button class="on" data-m="GET" onclick="GX.ex3.setMethod('GET')">GET</button>
+              <button data-m="POST" onclick="GX.ex3.setMethod('POST')">POST</button>
+            </div>
+          </div>
+          <div class="gx-field" style="flex:1;min-width:200px;">
+            <label>Endpoint</label>
+            <select class="gx-select" id="gx-ex3-endpoint" onchange="GX.ex3.render()"></select>
+          </div>
+          <button class="gx-btn" onclick="GX.ex3.send()">Envoyer ▸</button>
+        </div>
+        <div class="gx-field" id="gx-ex3-payload-wrap" style="margin-bottom:16px;display:none;">
+          <label>Payload envoyé (POST)</label>
+          <div class="gx-term" id="gx-ex3-payload" style="min-height:auto;"></div>
+        </div>
+        <div class="gx-field">
+          <label>Réponse du serveur</label>
+          <div class="gx-term" id="gx-ex3-resp">// Configurez une requête puis cliquez sur « Envoyer ».</div>
+        </div>
+        <div class="gx-fb" id="gx-ex3-fb"></div>
+        <div class="gx-earned" id="gx-ex3-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Connecteur d'APIs</b><br>+50 XP · Module 03 validé</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MODULE 04 — ETL -->
+<section id="etl" class="section section-navy-soft">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Module 04 — Pipelines & Qualité</div>
+      <h2 class="section-title">ETL : <span>la cuisine</span> de la data</h2>
+      <p class="section-sub">Les données brutes sont inutilisables directement. Elles doivent être transformées avant d'alimenter l'analyse.</p>
+    </div>
+    <div class="reveal rv1" style="margin-bottom:32px;">
+      <div class="etl-grid">
+        <div class="etl-stage">
+          <div class="etl-letter e">E</div>
+          <div class="etl-title">Extract</div>
+          <div class="etl-sub">Extraire la donnée là où elle vit : bases de données, APIs, fichiers, SaaS.</div>
+          <div class="etl-list">
+            <div class="etl-item">Salesforce CRM</div>
+            <div class="etl-item">Google Analytics</div>
+            <div class="etl-item">ERP interne</div>
+            <div class="etl-item">Fichiers SFTP</div>
+          </div>
+        </div>
+        <div class="etl-arrow">→</div>
+        <div class="etl-stage">
+          <div class="etl-letter t">T</div>
+          <div class="etl-title">Transform</div>
+          <div class="etl-sub">L'étape la plus critique. Jusqu'à 80 % du temps d'un data engineer se passe ici.</div>
+          <div class="etl-list">
+            <div class="etl-item">Suppression des doublons</div>
+            <div class="etl-item">Valeurs manquantes</div>
+            <div class="etl-item">Normalisation des formats</div>
+            <div class="etl-item">Jointures entre tables</div>
+          </div>
+        </div>
+        <div class="etl-arrow">→</div>
+        <div class="etl-stage">
+          <div class="etl-letter l">L</div>
+          <div class="etl-title">Load</div>
+          <div class="etl-sub">La donnée propre arrive dans son environnement final, prête pour les équipes.</div>
+          <div class="etl-list">
+            <div class="etl-item">Snowflake / BigQuery</div>
+            <div class="etl-item">Looker / Tableau</div>
+            <div class="etl-item">CDP Marketing</div>
+            <div class="etl-item">API de diffusion</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv2">
+      <div class="callout callout-danger">
+        <div class="callout-label">Règle d'or — Qualité</div>
+        <div class="callout-title">🚨 "Garbage In, Garbage Out" — le principe fondamental</div>
+        <p>Un modèle IA entraîné sur des données de mauvaise qualité produira de mauvaises prédictions — même le meilleur algorithme ne peut pas compenser des données corrompues.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;">
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:16px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:8px;">👥</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Doublons</div>
+          <div style="font-size:11px;color:var(--gray);">Un même client compté deux fois fausse tous les calculs</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:16px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:8px;">∅</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Valeurs manquantes</div>
+          <div style="font-size:11px;color:var(--gray);">Un champ "revenu" vide compromet toute segmentation</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:16px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:8px;">📅</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Formats incohérents</div>
+          <div style="font-size:11px;color:var(--gray);">"01/06/2024" vs "2024-06-01" → impossible à agréger</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:16px;text-align:center;">
+          <div style="font-size:24px;margin-bottom:8px;">🕰</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Données obsolètes</div>
+          <div style="font-size:11px;color:var(--gray);">Décision prise sur des données de l'an passé</div>
+        </div>
+      </div>
+    </div>
+    <!-- ============ EXERCISE · MODULE 04 · ETL cleaning ============ -->
+    <div class="gx-ex reveal" id="gx-ex4" data-gx-module="etl">
+      <div class="gx-ex-head">
+        <div class="gx-ex-ico">🧹</div>
+        <div class="gx-ex-titles">
+          <div class="gx-ex-eyebrow">Mini-jeu interactif · 3 min</div>
+          <div class="gx-ex-title">Nettoyez ce dataset client (dans le bon ordre)</div>
+        </div>
+        <div class="gx-ex-score" id="gx-ex4-score">0 / 3</div>
+      </div>
+      <div class="gx-ex-body">
+        <p class="gx-instr">Voici un jeu de données brut, plein de défauts. Appliquez les actions de nettoyage <b>dans l'ordre logique</b> et observez la transformation en direct.</p>
+        <div style="overflow-x:auto;border-radius:10px;border:1.5px solid var(--gray-bdr);margin-bottom:16px;">
+          <table class="gx-table" id="gx-ex4-table"></table>
+        </div>
+        <div class="gx-instr" style="margin-bottom:10px;">Étape <b id="gx-ex4-step">1</b>/3 — quelle action appliquer maintenant ?</div>
+        <div class="gx-pool" id="gx-ex4-actions"></div>
+        <div class="gx-actions">
+          <button class="gx-btn gx-btn-ghost" onclick="GX.ex4.reset()">Recommencer</button>
+        </div>
+        <div class="gx-fb" id="gx-ex4-fb"></div>
+        <div class="gx-earned" id="gx-ex4-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Chef de la Data Quality</b><br>+50 XP · Module 04 validé</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 05 — IA -->
+<section id="ai" class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Module 05 — Intelligence Artificielle</div>
+      <h2 class="section-title">L'écosystème IA : <span>Modèle,</span> <span>LLM & Agent</span></h2>
+      <p class="section-sub">Trois concepts distincts que tout le monde confond. Les comprendre, c'est parler le même langage que les équipes tech.</p>
+    </div>
+    <div class="reveal rv1" style="margin-bottom:32px;">
+      <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:14px;padding:24px;margin-bottom:20px;">
+        <h3 style="font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;">Comment un modèle IA apprend-il ?</h3>
+        <div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:12px;">
+          <div style="text-align:center;padding:20px;background:var(--gray-lt);border-radius:10px;">
+            <div style="font-size:28px;margin-bottom:8px;">📚</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Données d'entraînement</div>
+            <div style="font-size:11px;color:var(--gray);">Des millions d'exemples labellisés</div>
+          </div>
+          <div style="text-align:center;font-size:11px;color:var(--teal);font-weight:700;">→ ajustement →</div>
+          <div style="text-align:center;padding:20px;background:var(--teal-lt);border:1.5px solid rgba(0,178,178,.2);border-radius:10px;">
+            <div style="font-size:28px;margin-bottom:8px;">🧠</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Modèle entraîné</div>
+            <div style="font-size:11px;color:var(--gray);">Capable d'inférence sur de nouvelles données</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv2" style="margin-bottom:32px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">Les 3 types d'apprentissage machine</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+        <div class="ai-card">
+          <div class="icon">🏷</div><span class="badge badge-navy" style="margin-bottom:10px;">Supervisé</span>
+          <div class="title">Avec exemples connus</div>
+          <div class="body">Le modèle apprend à partir de données déjà labellisées par des humains.</div>
+          <div class="example">Cas client : prédiction de churn, scoring de leads</div>
+        </div>
+        <div class="ai-card">
+          <div class="icon">🔍</div><span class="badge badge-teal" style="margin-bottom:10px;">Non supervisé</span>
+          <div class="title">Auto-découverte</div>
+          <div class="body">Le modèle découvre lui-même des structures sans labels prédéfinis.</div>
+          <div class="example">Cas client : segmentation client, détection d'anomalies</div>
+        </div>
+        <div class="ai-card">
+          <div class="icon">🎮</div><span class="badge badge-purple" style="margin-bottom:10px;">Renforcement</span>
+          <div class="title">Essai / erreur / récompense</div>
+          <div class="body">L'agent maximise une récompense en testant des actions dans un environnement.</div>
+          <div class="example">Cas client : optimisation d'enchères, agents autonomes</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv3">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">Modèle · LLM · Agent : les vraies différences</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+        <div style="background:#fff;border:2px solid var(--gray-bdr);border-radius:14px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,var(--navy-dk),var(--purple-dk));padding:16px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:6px;">⚙️</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;">Modèle ML</div>
+          </div>
+          <div style="padding:16px;">
+            <span class="badge badge-navy" style="margin-bottom:10px;">Spécialisé, borné</span>
+            <p style="font-size:12px;color:var(--gray);line-height:1.65;margin-bottom:8px;">Prédit une chose précise. Entrée → Calcul → Sortie.</p>
+            <div style="font-size:11px;color:var(--teal-dk);font-style:italic;">Ex : prédit si un email est spam</div>
+          </div>
+        </div>
+        <div style="background:#fff;border:2px solid var(--teal);border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(0,178,178,.15);">
+          <div style="background:linear-gradient(135deg,var(--teal-dk),var(--teal));padding:16px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:6px;">🧠</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;">LLM</div>
+          </div>
+          <div style="padding:16px;">
+            <span class="badge badge-teal" style="margin-bottom:10px;">Général, conversationnel</span>
+            <p style="font-size:12px;color:var(--gray);line-height:1.65;margin-bottom:8px;">Comprend et génère du texte. Répond à des instructions en langage naturel.</p>
+            <div style="font-size:11px;color:var(--teal-dk);font-style:italic;">Ex : GPT-4, Claude, Gemini, Mistral</div>
+          </div>
+        </div>
+        <div style="background:#fff;border:2px solid var(--gray-bdr);border-radius:14px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,var(--purple-dk),var(--violet));padding:16px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:6px;">🤖</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;">Agent IA</div>
+          </div>
+          <div style="padding:16px;">
+            <span class="badge badge-purple" style="margin-bottom:10px;">Autonome, actif</span>
+            <p style="font-size:12px;color:var(--gray);line-height:1.65;margin-bottom:8px;">LLM + outils + mémoire + planification. Prend des décisions en plusieurs étapes.</p>
+            <div style="font-size:11px;color:var(--teal-dk);font-style:italic;">Ex : agent analyse verbatims + envoie rapport</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ============ EXERCISE · MODULE 05 · AI scenario MCQ ============ -->
+    <div class="gx-ex reveal" id="gx-ex5" data-gx-module="ai">
+      <div class="gx-ex-head">
+        <div class="gx-ex-ico">🧠</div>
+        <div class="gx-ex-titles">
+          <div class="gx-ex-eyebrow">Exercice interactif · 3 min</div>
+          <div class="gx-ex-title">Un client vous décrit son besoin — quelle techno conseillez-vous ?</div>
+        </div>
+        <div class="gx-ex-score" id="gx-ex5-score">0 / 4</div>
+      </div>
+      <div class="gx-ex-body">
+        <p class="gx-instr">Pour chaque brief client, choisissez la solution IA la plus adaptée. Un seul bon choix par scénario.</p>
+        <div id="gx-ex5-scenarios"></div>
+        <div class="gx-actions">
+          <button class="gx-btn" id="gx-ex5-check" disabled onclick="GX.ex5.check()">Valider mes choix</button>
+          <button class="gx-btn gx-btn-ghost" onclick="GX.ex5.reset()">Recommencer</button>
+        </div>
+        <div class="gx-fb" id="gx-ex5-fb"></div>
+        <div class="gx-earned" id="gx-ex5-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Cartographe de l'IA</b><br>+50 XP · Module 05 validé</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 06 — AGENTS -->
+<section id="agents" class="section section-dark" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-80px;top:-80px;width:300px;height:300px;background:var(--purple);border-radius:50%;opacity:.2;pointer-events:none;"></div>
+  <div style="position:absolute;left:-60px;bottom:-60px;width:200px;height:200px;background:var(--teal);border-radius:50%;opacity:.06;pointer-events:none;"></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--teal);"></div>
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-eyebrow" style="text-align:center;">Module 06 — Climax : L'IA Agentique</div>
+      <h2 class="section-title" style="text-align:center;">Quand l'IA passe<br>à <span>l'action autonome</span></h2>
+      <p class="section-sub" style="text-align:center;margin:0 auto 48px;">C'est la rupture fondamentale. L'IA ne répond plus — elle <strong style="color:#fff;">planifie, décide et agit</strong>.</p>
+    </div>
+    <div class="reveal rv1" style="margin-bottom:40px;">
+      <div style="border:2px solid var(--teal);border-radius:18px;padding:32px;background:rgba(0,178,178,.04);">
+        <div style="text-align:center;margin-bottom:24px;">
+          <div style="font-size:10px;font-weight:700;color:var(--teal);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">La Métaphore des Legos</div>
+          <h3 style="font-family:var(--font-head);font-size:22px;font-weight:800;color:#fff;">Assembler l'intelligence</h3>
+        </div>
+        <div class="lego-grid">
+          <div class="lego-card">
+            <div class="l-icon">📦</div>
+            <div class="l-badge"><span class="badge badge-ghost">Framework</span></div>
+            <div class="l-title">La boîte de jeu</div>
+            <div class="l-body">Les règles, l'environnement, les contraintes du système.</div>
+            <div class="l-tools">LangChain, AutoGen</div>
+          </div>
+          <div class="lego-card" style="border-color:rgba(0,178,178,.4);background:rgba(0,178,178,.06);">
+            <div class="l-icon">🧠</div>
+            <div class="l-badge"><span class="badge badge-teal">LLM</span></div>
+            <div class="l-title">Le cerveau</div>
+            <div class="l-body">La capacité de raisonnement, compréhension et génération.</div>
+            <div class="l-tools">GPT-4, Claude, Mistral</div>
+          </div>
+          <div class="lego-card">
+            <div class="l-icon">🔧</div>
+            <div class="l-badge"><span class="badge badge-gold">Outils</span></div>
+            <div class="l-title">Les bras actionneurs</div>
+            <div class="l-body">APIs, web, emails, bases de données, code exécutable.</div>
+            <div class="l-tools">Actions concrètes</div>
+          </div>
+          <div class="lego-card" style="border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.06);">
+            <div class="l-icon">🤖</div>
+            <div class="l-badge"><span class="badge badge-purple">Agent</span></div>
+            <div class="l-title">Le chef de chantier</div>
+            <div class="l-body">Orchestre le tout. Planifie, décide, exécute, itère.</div>
+            <div class="l-tools">LLM + Outils + Mémoire</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv2">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">Un agent en action — Exemple Converteo</h3>
+      <div style="background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;">
+        <div style="padding:20px;background:rgba(0,178,178,.08);border-bottom:1px solid rgba(255,255,255,.06);">
+          <div style="font-size:10px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Requête du consultant</div>
+          <p style="font-family:var(--font-head);font-size:15px;color:#fff;font-weight:600;">"Analyse tous les verbatims clients du Q3, identifie les irritants principaux, et envoie le rapport à l'équipe produit."</p>
+        </div>
+        <div style="padding:20px;">
+          <div style="font-size:10px;font-weight:700;color:#6B6EA8;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;">Exécution de l'agent → 4 étapes autonomes</div>
+          <div class="agent-steps">
+            <div class="agent-step"><div class="step-num">1</div><div><div class="step-title">🔍 Interroge la base de données</div><div class="step-body">Exécute une requête SQL pour extraire les 10 000 avis du Q3. Aucune intervention humaine.</div></div></div>
+            <div class="agent-step"><div class="step-num">2</div><div><div class="step-title">🧠 Analyse et synthétise</div><div class="step-body">Lit les verbatims, détecte les thèmes récurrents et les irritants par segmentation sémantique.</div></div></div>
+            <div class="agent-step"><div class="step-num">3</div><div><div class="step-title">📝 Rédige le rapport exécutif</div><div class="step-body">Structure et rédige un rapport avec insights et recommandations priorisées.</div></div></div>
+            <div class="agent-step"><div class="step-num">4</div><div><div class="step-title">📨 Envoie l'email</div><div class="step-body">Expédie automatiquement le rapport à l'équipe produit avec les bonnes pièces jointes.</div></div></div>
+          </div>
+          <div style="margin-top:14px;padding:12px 16px;background:rgba(16,185,129,.08);border-left:3px solid var(--green);border-radius:0 8px 8px 0;font-size:12px;color:#8B8ECA;">⏱ Temps d'exécution : <strong style="color:var(--green);">8 minutes</strong> — vs 2-3 jours d'analyse manuelle. Sans intervention humaine.</div>
+        </div>
+      </div>
+    </div>
+    <!-- ============ EXERCISE · MODULE 06 · Agent builder ============ -->
+    <div class="gx-ex gx-on-dark reveal" id="gx-ex6" data-gx-module="agents">
+      <div class="gx-ex-head">
+        <div class="gx-ex-ico">🛠</div>
+        <div class="gx-ex-titles">
+          <div class="gx-ex-eyebrow">Atelier interactif · 2 min</div>
+          <div class="gx-ex-title">Composez votre propre agent IA</div>
+        </div>
+        <div class="gx-ex-score" id="gx-ex6-score">0 / 4</div>
+      </div>
+      <div class="gx-ex-body">
+        <div style="background:rgba(0,178,178,.1);border:1.5px solid rgba(0,178,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
+          <div style="font-size:9px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">📋 Brief client</div>
+          <p style="font-size:13px;color:#cfd1ec;line-height:1.6;">Un retailer veut un agent qui <strong style="color:#fff;">surveille quotidiennement les avis clients négatifs sur son site</strong>, les analyse par catégorie de produit, et <strong style="color:#fff;">alerte l'équipe produit</strong> si un seuil critique est dépassé.</p>
+        </div>
+        <p class="gx-instr">Choisissez les 4 briques adaptées à ce scénario précis. Une mauvaise combinaison sera signalée.</p>
+        <div class="gx-builder" id="gx-ex6-builder"></div>
+        <div class="gx-actions">
+          <button class="gx-btn" id="gx-ex6-build" disabled onclick="GX.ex6.build()">Générer le workflow ▸</button>
+          <button class="gx-btn gx-btn-ghost" onclick="GX.ex6.reset()">Réinitialiser</button>
+        </div>
+        <div class="gx-workflow" id="gx-ex6-wf"></div>
+        <div class="gx-fb" id="gx-ex6-fb"></div>
+        <div class="gx-earned" id="gx-ex6-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Bâtisseur d'Agents</b><br>+50 XP · Module 06 validé</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 07 — RAG & MCP -->
+<section id="rag" class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Module 07 — Protocoles Avancés</div>
+      <h2 class="section-title">RAG & MCP : <span>l'IA qui sait</span> ce qu'elle ne sait pas</h2>
+      <p class="section-sub">Comment connecter un LLM à vos propres données — et comment les agents communiquent avec les outils du monde réel.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;" class="reveal rv1">
+      <div>
+        <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;">RAG <span style="font-family:var(--font-mono);font-size:12px;color:var(--gray);font-weight:400;">Retrieval-Augmented Generation</span></h3>
+        <p style="font-size:13px;color:var(--gray);margin-bottom:16px;line-height:1.65;">Un LLM connaît le monde jusqu'à sa date d'entraînement. Avec le RAG, on lui donne accès à <strong>vos documents en temps réel</strong>.</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+          <div style="padding:12px 14px;background:var(--red-lt);border:1px solid rgba(239,68,68,.2);border-radius:8px;font-size:12px;color:var(--gray-dk);"><strong style="color:#991B1B;">❌ Sans RAG :</strong> "Quels sont les chiffres Fnac Darty Q3 ?" → Je n'ai pas accès à ces données.</div>
+          <div style="padding:12px 14px;background:var(--green-lt);border:1px solid rgba(16,185,129,.2);border-radius:8px;font-size:12px;color:var(--gray-dk);"><strong style="color:#065F46;">✓ Avec RAG :</strong> Le système récupère les bons documents, les injecte dans le contexte, et répond avec précision et sources.</div>
+        </div>
+        <div class="rag-steps">
+          <div class="rag-step"><div class="rag-num">1</div><div><div class="rag-title">Question posée</div><div class="rag-body">"Quel est le taux de churn Q3 ?"</div></div></div>
+          <div class="rag-step"><div class="rag-num">2</div><div><div class="rag-title">Retrieval</div><div class="rag-body">Recherche vectorielle dans la base documentaire interne</div></div></div>
+          <div class="rag-step"><div class="rag-num">3</div><div><div class="rag-title">Augmentation</div><div class="rag-body">Les extraits pertinents sont injectés dans le prompt du LLM</div></div></div>
+          <div class="rag-step" style="border-color:var(--teal);"><div class="rag-num" style="background:var(--teal);">4</div><div><div class="rag-title" style="color:var(--teal-dk);">Génération</div><div class="rag-body">Le LLM génère une réponse ancrée sur vos données, avec sources</div></div></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;">MCP <span style="font-family:var(--font-mono);font-size:12px;color:var(--gray);font-weight:400;">Model Context Protocol</span></h3>
+        <p style="font-size:13px;color:var(--gray);margin-bottom:16px;line-height:1.65;">Standard ouvert (Anthropic, 2024) permettant à un agent IA de se connecter à n'importe quel outil externe. L'USB-C de l'IA.</p>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:14px;padding:20px;">
+          <div style="text-align:center;margin-bottom:16px;">
+            <div style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--navy-dk),var(--purple-dk));font-size:24px;margin-bottom:8px;">🤖</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);">Agent IA</div>
+          </div>
+          <div class="mcp-tools">
+            <div class="mcp-tool"><div class="mico">📁</div><div class="mname">Fichiers</div></div>
+            <div class="mcp-tool"><div class="mico">🗄</div><div class="mname">BDD</div></div>
+            <div class="mcp-tool"><div class="mico">🌐</div><div class="mname">Web</div></div>
+            <div class="mcp-tool"><div class="mico">📧</div><div class="mname">Email</div></div>
+            <div class="mcp-tool"><div class="mico">📊</div><div class="mname">BI / CRM</div></div>
+            <div class="mcp-tool"><div class="mico">🔧</div><div class="mname">APIs</div></div>
+          </div>
+          <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--teal-dk);font-style:italic;">↑ Tous connectés via le protocole MCP</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:14px;">
+          <div style="display:flex;gap:8px;font-size:12px;color:var(--gray-dk);"><span style="color:var(--teal);">●</span>Un agent, des dizaines d'outils connectables</div>
+          <div style="display:flex;gap:8px;font-size:12px;color:var(--gray-dk);"><span style="color:var(--teal);">●</span>Interface standardisée et sécurisée</div>
+          <div style="display:flex;gap:8px;font-size:12px;color:var(--gray-dk);"><span style="color:var(--teal);">●</span>Interopérable entre LLMs différents</div>
+        </div>
+      </div>
+    </div>
+    <!-- ============ EXERCISE · MODULE 07 · RAG sequencing + MCP ============ -->
+    <div class="gx-ex reveal" id="gx-ex7" data-gx-module="rag">
+      <div class="gx-ex-head">
+        <div class="gx-ex-ico">🔄</div>
+        <div class="gx-ex-titles">
+          <div class="gx-ex-eyebrow">Double exercice · 3 min</div>
+          <div class="gx-ex-title">Reconstituez le flux RAG &amp; branchez les bons outils MCP</div>
+        </div>
+        <div class="gx-ex-score" id="gx-ex7-score">0 / 2</div>
+      </div>
+      <div class="gx-ex-body">
+        <p class="gx-instr"><b>Partie A — RAG.</b> Glissez-déposez les étapes pour reconstituer le pipeline, de la question à la réponse.</p>
+        <div class="gx-hint"><svg viewBox="0 0 24 24"><path d="M8 6l-3 3 3 3"/><path d="M16 6l3 3-3 3"/><path d="M12 2v14"/><path d="M8 18l4 4 4-4"/></svg> Réordonnez les blocs par glisser-déposer</div>
+        <div class="gx-seq" id="gx-ex7-seq"></div>
+        <div class="gx-actions">
+          <button class="gx-btn" onclick="GX.ex7.checkSeq()">Vérifier l'ordre</button>
+        </div>
+        <div class="gx-fb" id="gx-ex7-fb-seq"></div>
+
+        <div style="height:1px;background:var(--gray-bdr);margin:24px 0;"></div>
+
+        <p class="gx-instr"><b>Partie B — MCP.</b> Un agent doit <b>réserver une salle, vérifier un agenda et envoyer un e-mail récap</b>. Sélectionnez UNIQUEMENT les outils nécessaires.</p>
+        <div class="gx-pool" id="gx-ex7-tools"></div>
+        <div class="gx-actions">
+          <button class="gx-btn" onclick="GX.ex7.checkMcp()">Valider les connexions</button>
+          <button class="gx-btn gx-btn-ghost" onclick="GX.ex7.reset()">Recommencer</button>
+        </div>
+        <div class="gx-fb" id="gx-ex7-fb-mcp"></div>
+        <div class="gx-earned" id="gx-ex7-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Orchestrateur RAG &amp; MCP</b><br>+50 XP · Module 07 validé</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MODULE 08 — BUSINESS -->
+<section id="business" class="section section-navy-soft">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Module 08 — Valeur Business</div>
+      <h2 class="section-title">Ce que ça change<br><span>pour vos missions</span></h2>
+      <p class="section-sub">Les cas d'usage concrets — et la posture du consultant tech-aware qui fait la différence.</p>
+    </div>
+    <div class="reveal rv1" style="margin-bottom:32px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">4 cas d'usage clés</h3>
+      <div class="use-cases">
+        <div class="use-case">
+          <div class="uc-head"><div class="uc-icon">🎯</div><div class="uc-badge"><span class="badge badge-teal">E-Commerce</span></div><div class="uc-title">Personnalisation à grande échelle</div></div>
+          <div class="uc-body">Recommandations produits individualisées en temps réel basées sur le comportement, l'historique et le contexte client. +15 à 35% de conversion selon les implémentations.</div>
+          <div class="uc-stack">Technos : CDP + Modèle ML + API temps réel</div>
+        </div>
+        <div class="use-case">
+          <div class="uc-head"><div class="uc-icon">⚡</div><div class="uc-badge"><span class="badge badge-green">Reporting</span></div><div class="uc-title">Automatisation des reportings</div></div>
+          <div class="uc-body">Pipeline data + agent IA = rapport hebdomadaire généré et envoyé automatiquement. Libère 2 à 3 jours par semaine d'analyse manuelle pour les équipes.</div>
+          <div class="uc-stack">Technos : ETL + LLM + Orchestrateur agentique</div>
+        </div>
+        <div class="use-case">
+          <div class="uc-head"><div class="uc-icon">📉</div><div class="uc-badge"><span class="badge badge-gold">Rétention</span></div><div class="uc-title">Analyse prédictive du churn</div></div>
+          <div class="uc-body">Identifier les clients susceptibles de partir 30 jours avant qu'ils ne le fassent. Déclencher automatiquement les actions de rétention ciblées via le CRM.</div>
+          <div class="uc-stack">Technos : ML supervisé + CDP + CRM intégré</div>
+        </div>
+        <div class="use-case">
+          <div class="uc-head"><div class="uc-icon">🤖</div><div class="uc-badge"><span class="badge badge-purple">Agents IA</span></div><div class="uc-title">Assistants sur-mesure</div></div>
+          <div class="uc-body">Agents capables de répondre aux questions métier complexes, déclencher des actions et prendre des décisions — basés sur les données internes du client.</div>
+          <div class="uc-stack">Technos : LLM + RAG + MCP + Outils métier</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv2" style="margin-bottom:32px;">
+      <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:16px;overflow:hidden;">
+        <div style="padding:20px 28px;border-bottom:1px solid var(--gray-bdr);background:linear-gradient(135deg,var(--navy-dk),var(--purple-dk));">
+          <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;">La posture du consultant <span style="color:var(--teal);">tech-aware</span></h3>
+          <p style="font-size:12px;color:#8B8ECA;margin-top:4px;">Avant / Après la formation</p>
+        </div>
+        <div class="posture-grid">
+          <div class="posture-col">
+            <div class="posture-label" style="color:var(--red);">❌ Avant — Posture "boîte noire"</div>
+            <div class="posture-item" style="background:var(--red-lt);"><span class="pi">💬</span>"L'IA est une boîte noire, je laisse les devs gérer."</div>
+            <div class="posture-item" style="background:var(--red-lt);"><span class="pi">💬</span>"Je ne sais pas pourquoi le pipeline est cassé."</div>
+            <div class="posture-item" style="background:var(--red-lt);"><span class="pi">💬</span>"Le rapport de nuit est en retard... je ne comprends pas."</div>
+          </div>
+          <div class="posture-col">
+            <div class="posture-label" style="color:var(--green);">✓ Après — Posture "tech-aware"</div>
+            <div class="posture-item" style="background:var(--green-lt);"><span class="pi">💬</span>"Quels sont vos besoins en qualité data pour le modèle ?"</div>
+            <div class="posture-item" style="background:var(--green-lt);"><span class="pi">💬</span>"Est-ce un problème d'extraction ou de transformation dans l'ETL ?"</div>
+            <div class="posture-item" style="background:var(--green-lt);"><span class="pi">💬</span>"Votre pipeline est en Batch — pourquoi pas du Streaming ici ?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rv3">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">Les 3 idées à retenir</h3>
+      <div class="takeaways">
+        <div class="takeaway"><div class="tk-num">01</div><div class="tk-title">La chaîne crée la valeur</div><div class="tk-body">La donnée brute ne vaut rien seule. Sa valeur naît de la chaîne complète : collecte → stockage → traitement → analyse → action.</div></div>
+        <div class="takeaway"><div class="tk-num">02</div><div class="tk-title">Qualité avant quantité</div><div class="tk-body">Garbage in = Garbage out. Un modèle parfait sur des données pourries donnera de mauvaises prédictions sans exception.</div></div>
+        <div class="takeaway"><div class="tk-num">03</div><div class="tk-title">De l'analyse à l'action</div><div class="tk-body">L'IA agentique fait passer notre métier de l'analyse vers l'action autonome. Ce changement est structurel et irréversible.</div></div>
+      </div>
+    </div>
+    <!-- ============ EXERCISE · MODULE 08 · Consulting case ============ -->
+    <div class="gx-ex reveal" id="gx-ex8" data-gx-module="business">
+      <div class="gx-ex-head">
+        <div class="gx-ex-ico">💼</div>
+        <div class="gx-ex-titles">
+          <div class="gx-ex-eyebrow">Cas de mission · 3 min</div>
+          <div class="gx-ex-title">Mini-cas consulting : quelle approche recommandez-vous ?</div>
+        </div>
+        <div class="gx-ex-score" id="gx-ex8-score">0 / 3</div>
+      </div>
+      <div class="gx-ex-body">
+        <div class="callout" style="margin-bottom:18px;">
+          <div class="callout-label">Brief client — Mission type</div>
+          <div class="callout-title">🛍 Retailer omnicanal — 8M de clients</div>
+          <p>« Nos conseillers en magasin perdent un temps fou à chercher l'historique d'achat, le programme de fidélité et les e-mails des clients, éparpillés dans 5 outils. On veut une <b>vue client unifiée et temps réel</b> pour personnaliser la relation. » Budget cadré, équipe data junior.</p>
+        </div>
+        <div id="gx-ex8-case"></div>
+        <div class="gx-fb" id="gx-ex8-fb"></div>
+        <div class="gx-earned" id="gx-ex8-earned"><span class="ico">🏆</span><span class="txt"><b>Badge débloqué — Consultant Tech-Aware</b><br>+50 XP · Parcours complété !</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="section section-dark" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-80px;top:-80px;width:280px;height:280px;background:var(--purple);border-radius:50%;opacity:.2;pointer-events:none;"></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--teal);"></div>
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-eyebrow" style="text-align:center;">Certification — Quiz Final</div>
+      <h2 class="section-title" style="text-align:center;">Êtes-vous <span>tech-aware</span> ?</h2>
+      <p class="section-sub" style="text-align:center;margin:0 auto 48px;">10 questions pour valider votre compréhension.</p>
+    </div>
+    <div class="quiz-wrap">
+      <div class="score-card" id="score-card">
+        <div class="score-emoji" id="score-emoji">🎯</div>
+        <div class="score-number" id="score-num"></div>
+        <div class="score-label" id="score-label"></div>
+        <button class="score-retry" onclick="resetQuiz()">Réessayer →</button>
+      </div>
+      <div class="quiz-prog-row" id="quiz-prog">
+        <span class="quiz-prog-label">Question <span id="q-cur">1</span> / 10</span>
+        <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="q-fill" style="width:10%"></div></div>
+        <span class="quiz-score-live" id="q-live">0 pts</span>
+      </div>
+      <div id="quiz-q"></div>
+      <div class="quiz-nav" id="quiz-nav">
+        <button class="quiz-next-btn" id="next-btn" onclick="nextQ()" disabled>Question suivante →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer-bar">
+  <strong>Converteo · Tech Academy</strong> — Module 1 : Acculturation aux Métiers de la Tech &nbsp;·&nbsp; Formation interne &nbsp;·&nbsp; © Converteo 2026
+</footer>
+
+<!-- ===== Scripts (ordre important) =====
+     1. quiz-data.js  : contenu des questions (éditable par les consultants)
+     2. quiz.js       : logique du quiz + complétion SCORM
+     3. exercises.js  : les 8 exercices interactifs
+     4. app.js        : animations, observers, barre de progression, boot -->
+<script src="content/quiz-data.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/exercises.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

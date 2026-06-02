@@ -1,0 +1,13 @@
+{
+  "name": "converteo-voyage-donnee",
+  "version": "3.0.0",
+  "description": "Le Voyage de la Donnée — module de formation interactif (Converteo Tech Academy). Source multi-fichiers + build SCORM 1.2.",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js",
+    "serve": "python3 -m http.server 8000 --directory src",
+    "serve:dist": "python3 -m http.server 8001 --directory dist"
+  },
+  "author": "Converteo Tech Academy",
+  "license": "UNLICENSED"
+}

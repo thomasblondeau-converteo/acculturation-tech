@@ -1,0 +1,23 @@
+/* =============================================================================
+   CONTENU PÉDAGOGIQUE — Questions du quiz final
+   -----------------------------------------------------------------------------
+   👉 CONSULTANTS : éditez UNIQUEMENT ce fichier pour le quiz.
+   Chaque question = { q, opts:[...], ok:<index de la bonne réponse>, exp }
+     - q    : l'énoncé
+     - opts : les options (2 à 4)
+     - ok   : index (0-based) de la bonne réponse dans opts
+     - exp  : explication affichée après réponse
+   Ne touchez pas aux noms de variables ni à la structure.
+   ============================================================================= */
+const QUIZ = [
+  {q:"À quel type de donnée correspond un clic sur une bannière publicitaire ?",opts:["Donnée structurée","Donnée semi-structurée","Donnée non structurée"],ok:0,exp:"Un clic génère un événement enregistré dans un format tabulaire prédéfini (timestamp, user_id, banner_id...) — c'est une donnée structurée."},
+  {q:"Dans le cycle de vie de la donnée, quel est le bon ordre chronologique ?",opts:["Création → Visualisation → Nettoyage → Action → Archivage","Collecte → Traitement → Analyse → Stockage → Action","Collecte → Stockage → Traitement → Analyse → Action"],ok:2,exp:"On collecte d'abord, on stocke, on traite (nettoie, transforme), on analyse, puis on agit. Le stockage précède toujours le traitement."},
+  {q:"Quelle est la différence fondamentale entre un Data Warehouse et un Data Lake ?",opts:["Un Data Warehouse ne stocke que des données non structurées","Un Data Warehouse est un entrepôt analytique structuré, un Data Lake stocke tout type de fichiers en brut","Un Data Warehouse est toujours physique, le Data Lake toujours dans le cloud"],ok:1,exp:"Le Data Warehouse (ex: Snowflake) est structuré et optimisé pour l'analyse. Le Data Lake (ex: S3) accepte tout en brut, dans tous les formats."},
+  {q:"Que signifie l'acronyme ETL ?",opts:["Edit, Transform, Listen","Evaluate, Test, Load","Extract, Transform, Load"],ok:2,exp:"ETL = Extract (extraire des sources), Transform (nettoyer, normaliser), Load (charger en destination analytique)."},
+  {q:"Quelle est la différence entre une requête GET et une requête POST ?",opts:["GET lit des données sans les modifier, POST en crée ou en envoie","GET est plus lent que POST","POST est réservé aux administrateurs système"],ok:0,exp:"GET récupère de l'information (idempotent). POST envoie des données pour créer ou modifier une ressource côté serveur."},
+  {q:"Laquelle de ces affirmations décrit correctement un agent IA ?",opts:["C'est un modèle incapable d'accéder à internet","C'est un LLM équipé d'outils, d'une mémoire et capable de planifier des tâches de façon autonome","C'est un algorithme classique de traitement de données structurées"],ok:1,exp:"Un agent IA = LLM (cerveau) + Outils (bras) + Mémoire + Planification. Il peut agir dans le monde réel de façon autonome."},
+  {q:"Que signifie 'Garbage In, Garbage Out' dans le contexte de la data ?",opts:["Il faut toujours recycler ses anciens datasets","Un modèle entraîné sur de mauvaises données produira de mauvais résultats, même s'il est excellent","Les données inutiles doivent être archivées avant suppression"],ok:1,exp:"La qualité des données d'entrée détermine la qualité des sorties. Aucun algorithme ne compense des données corrompues ou incomplètes."},
+  {q:"Qu'est-ce que le RAG (Retrieval-Augmented Generation) ?",opts:["Un type de modèle de machine learning supervisé","Une technique qui permet à un LLM d'accéder à des documents externes en temps réel pour répondre avec précision","Un protocole de communication entre agents IA"],ok:1,exp:"Le RAG récupère des documents pertinents (retrieval), les injecte dans le contexte du LLM, qui génère ensuite une réponse ancrée sur ces données."},
+  {q:"Quel type d'apprentissage utilise-t-on pour une segmentation client sans labels prédéfinis ?",opts:["L'apprentissage supervisé","L'apprentissage non supervisé","L'apprentissage par renforcement"],ok:1,exp:"Sans labels (sans réponse connue à l'avance), on utilise l'apprentissage non supervisé. Le modèle découvre seul des groupes dans les données."},
+  {q:"Adopter la posture du consultant 'tech-aware' signifie :",opts:["Laisser les développeurs gérer l'architecture technique","Refuser l'IA car c'est une boîte noire","Comprendre les concepts tech pour cadrer les besoins, challenger l'architecture et identifier les risques de qualité"],ok:2,exp:"Tech-aware ne signifie pas coder — mais comprendre assez pour poser les bonnes questions, détecter les risques, et challenger intelligemment les choix techniques."}
+];
