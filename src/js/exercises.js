@@ -434,7 +434,17 @@ const GX = (function(){
        brief:'Un retailer veut générer automatiquement des fiches produits à partir d\'un tableau Excel contenant le nom, le poids et la catégorie de 10 000 articles.',
        opts:['⚙️ Modèle ML','💬 LLM','🤖 Agent IA'],
        ok:1,
-       exp:'Génération de texte à partir de données structurées = LLM. Pas besoin d\'un agent (pas d\'action multi-étapes) ni d\'un modèle ML (pas de prédiction numérique).'}
+       exp:'Génération de texte à partir de données structurées = LLM. Pas besoin d\'un agent (pas d\'action multi-étapes) ni d\'un modèle ML (pas de prédiction numérique).'},
+      {id:'sc5',
+       brief:'Un client retail veut personnaliser les emails promotionnels envoyés à 2 millions de clients, en adaptant le ton et les produits recommandés selon l\'historique d\'achat de chacun.',
+       opts:['⚙️ Modèle ML (recommandation) + template email','💬 LLM seul pour tout générer','🤖 Agent IA (ML + LLM + orchestration)'],
+       ok:2,
+       exp:'C\'est un cas hybride : un modèle ML de recommandation identifie les bons produits, un LLM génère le texte personnalisé, et un agent orchestre le tout + envoie les emails. Ni ML seul (pas de génération de texte) ni LLM seul (pas de recommandation produit) ne suffisent.'},
+      {id:'sc6',
+       brief:'Une équipe juridique doit analyser en une seule passe un corpus de 900 pages de contrats et de procédures internes pour générer un rapport de conformité RGPD. Quel LLM recommandez-vous ?',
+       opts:['💬 GPT-5.4 / o3 (OpenAI) — 2M tokens, leader marché','💬 Claude 4.7 (Anthropic) — 500k tokens, top rédaction','💬 Gemini 2.5 Pro (Google) — 2M tokens, champion contexte'],
+       ok:2,
+       exp:'Gemini 2.5 Pro maintient le record absolu de fenêtre de contexte (2 millions de tokens) et est spécifiquement optimisé pour l\'ingéstion de vastes corpus documentaires. 900 pages ≈ 700k tokens — Gemini 2.5 Pro traite cela en une seule requête. GPT-5.4 peut également le faire (2M tokens), mais Gemini est le champion reconnu sur ce type de tâche documentaire.'},
     ];
     let answers = {};
     function init(){
@@ -482,7 +492,6 @@ const GX = (function(){
           if(idx===sc.ok){ opt.style.borderColor='var(--green)'; opt.style.background='var(--green-lt)'; opt.querySelector('.gx-opt-radio').style.background='var(--green)'; opt.querySelector('.gx-opt-radio').style.color='#fff'; }
           else if(idx===chosen && !correct){ opt.style.borderColor='var(--red)'; opt.style.background='var(--red-lt)'; }
         });
-        // inject explanation
         const scDiv=wrap.querySelector('[data-sc="'+sc.id+'"]');
         if(scDiv){
           const expDiv=document.createElement('div');
@@ -493,7 +502,7 @@ const GX = (function(){
       });
       document.getElementById('gx-ex5-score').textContent=ok+' / '+SCENARIOS.length;
       if(ok===SCENARIOS.length){
-        fb('gx-ex5-fb','good','<p>Parfait 4/4 ! Vous distinguez modèle ML, LLM et agent — un vrai atout pour cadrer les projets IA en mission.</p>');
+        fb('gx-ex5-fb','good','<p>Parfait '+SCENARIOS.length+'/'+SCENARIOS.length+' ! Vous distinguez modèle ML, LLM et agent, et savez choisir le bon LLM selon le contexte — un vrai atout pour cadrer les projets IA en mission.</p>');
         complete('ai','🏅 Cartographe de l\'IA');
       } else {
         fb('gx-ex5-fb','bad','<p>'+ok+'/'+SCENARIOS.length+' correct. Lisez les explications ci-dessus pour affiner votre boussole IA.</p>');
@@ -511,7 +520,8 @@ const GX = (function(){
       objective:'Analyser les verbatims clients',
       tools:'CRM + Base verbatims',
       memory:'Long terme (vectorielle)',
-      action:'Envoyer un e-mail à l\'équipe'
+      action:'Envoyer un e-mail à l\'équipe',
+      framework:'LangGraph (LangChain)'
     };
     const EXPLANATIONS = {
       objective:{
@@ -533,13 +543,19 @@ const GX = (function(){
         'Envoyer un e-mail à l\'équipe':'✅ Correct — l\'alerte se fait bien par e-mail à l\'équipe produit.',
         'Mettre à jour un dashboard':'❌ Un dashboard est passif. Le brief demande une alerte active quand un seuil est dépassé.',
         'Créer un ticket Jira':'❌ Utile en complément, mais le brief demande d\'alerter l\'équipe produit directement.'
+      },
+      framework:{
+        'LangGraph (LangChain)':'✅ Correct — LangGraph est idéal pour un agent avec cycles de rétroaction (surveiller → analyser → seuil → alerter) et mémoire persistante.',
+        'ADK (Google)':'❌ ADK est excellent pour les projets GCP/Gemini, mais LangGraph offre un contrôle plus fin sur les workflows stateful complexes avec mémoire vectorielle.',
+        'CrewAI (Open source)':'❌ CrewAI est conçu pour des équipes d\'agents avec rôles distincts. Ici, un seul agent suffit — LangGraph est mieux adapté.'
       }
     };
     const SLOTS = [
       {key:'objective', label:'1 · Objectif', opts:['Analyser les verbatims clients','Surveiller la concurrence','Générer un reporting hebdo']},
       {key:'tools',     label:'2 · Outils',   opts:['CRM + Base verbatims','Web search + Scraper','SQL Warehouse + BI']},
       {key:'memory',    label:'3 · Mémoire',  opts:['Court terme (session)','Long terme (vectorielle)','Aucune']},
-      {key:'action',    label:'4 · Action finale', opts:['Envoyer un e-mail à l\'équipe','Mettre à jour un dashboard','Créer un ticket Jira']}
+      {key:'action',    label:'4 · Action finale', opts:['Envoyer un e-mail à l\'équipe','Mettre à jour un dashboard','Créer un ticket Jira']},
+      {key:'framework', label:'5 · Framework',  opts:['LangGraph (LangChain)','ADK (Google)','CrewAI (Open source)']}
     ];
     const pick={};
     function init(){
@@ -555,7 +571,7 @@ const GX = (function(){
         w.appendChild(col);
       });
       document.getElementById('gx-ex6-wf').className='gx-workflow';
-      document.getElementById('gx-ex6-score').textContent='0 / 4';
+      document.getElementById('gx-ex6-score').textContent='0 / 5';
       const f=document.getElementById('gx-ex6-fb')||null; if(f) f.className='gx-fb';
       refresh();
     }
@@ -579,7 +595,7 @@ const GX = (function(){
           }
         });
       });
-      document.getElementById('gx-ex6-score').textContent=ok+' / 4';
+      document.getElementById('gx-ex6-score').textContent=ok+' / 5';
       wf.className='gx-workflow show';
       wf.innerHTML=
         '<div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;">Workflow de votre agent</div>'+
@@ -591,11 +607,11 @@ const GX = (function(){
       fbWrap.style.cssText='margin-top:14px;';
       fbWrap.innerHTML=feedbackLines.join('');
       wf.appendChild(fbWrap);
-      if(ok===4){
-        fb('gx-ex6-fb','good','<p>Combinaison parfaite ! Vous savez architecturer un agent IA adapté à un besoin métier précis.</p>');
+      if(ok===5){
+        fb('gx-ex6-fb','good','<p>Combinaison parfaite ! Vous savez architecturer un agent IA avec le bon framework selon le besoin métier.</p>');
         complete('agents','🏅 Bâtisseur d\'Agents');
       } else {
-        fb('gx-ex6-fb','bad','<p>'+ok+'/4 briques correctes. Corrigez les erreurs et réessayez — chaque choix doit coller au scénario.</p>');
+        fb('gx-ex6-fb','bad','<p>'+ok+'/5 briques correctes. Corrigez les erreurs et réessayez — chaque choix doit coller au scénario.</p>');
         // re-enable button for retry
         setTimeout(()=>{ document.getElementById('gx-ex6-build').disabled=false; },800);
         // reset picks to allow re-selection
@@ -639,7 +655,9 @@ const GX = (function(){
         c.onclick=()=>{ mcpSel[t.id]=!mcpSel[t.id]; c.classList.toggle('gx-active',mcpSel[t.id]); };
         pool.appendChild(c);
       });
-      ['gx-ex7-fb-seq','gx-ex7-fb-mcp'].forEach(id=>{const f=document.getElementById(id);f.className='gx-fb';});
+      ['gx-ex7-fb-seq','gx-ex7-fb-mcp','gx-ex7-fb-rvft'].forEach(id=>{const f=document.getElementById(id);if(f)f.className='gx-fb';});
+      rvftAnswers={};
+      renderRvft();
     }
     function renderSeq(){
       const wrap=document.getElementById('gx-ex7-seq'); wrap.innerHTML='';
@@ -708,7 +726,67 @@ const GX = (function(){
       else fb('gx-ex7-fb-seq','bad','<p>Pas encore. Le LLM ne peut générer qu\'<b>après</b> avoir récupéré (retrieval) puis reçu le contexte. Reclassez de la question vers la réponse.</p>');
       seqDone=ok;
     }
-    let seqDone=false, mcpDone=false;
+    let seqDone=false, mcpDone=false, rvftDone=false;
+    const RVFT_Q=[
+      {id:'r1',
+       text:'Un cabinet conseil veut que son LLM ma\u00eetrise le jargon sp\u00e9cifique du retail (SKU, GRP, DNUV\u2026) pour am\u00e9liorer ses r\u00e9ponses sur ce domaine.',
+       opts:['\ud83c\udfaf Fine-tuning \u2014 adapter le mod\u00e8le au vocabulaire m\u00e9tier','\ud83d\udd0d RAG \u2014 injecter un glossaire retail en contexte','🤔 Les deux sont équivalents'],
+       ok:0,
+       exp:'Le jargon m\u00e9tier est une connaissance stable \u2014 le fine-tuning est adapt\u00e9 pour \u00e9duquer le mod\u00e8le durablement sur un domaine. Le RAG serait trop co\u00fbteux (injecter un glossaire \u00e0 chaque requ\u00eate) pour un besoin qui ne change pas.'},
+      {id:'r2',
+       text:'Un assureur veut que son LLM puisse r\u00e9pondre aux questions en s\'appuyant sur les 5 000 pages de ses contrats d\'assurance mis \u00e0 jour chaque trimestre.',
+       opts:['\ud83c\udfaf Fine-tuning \u2014 entra\u00eener le mod\u00e8le sur tous les contrats','\ud83d\udd0d RAG \u2014 r\u00e9cup\u00e9rer les clauses pertinentes \u00e0 chaque question','\ud83d\udcca Les deux en parall\u00e8le obligatoirement'],
+       ok:1,
+       exp:'Les contrats changent r\u00e9guli\u00e8rement \u2014 le RAG est id\u00e9al car il acc\u00e8de aux derni\u00e8res versions en temps r\u00e9el sans re-entra\u00eenement. Fine-tuner \u00e0 chaque trimestre serait tr\u00e8s co\u00fbteux et long.'}
+    ];
+    let rvftAnswers={};
+    function renderRvft(){
+      const wrap=document.getElementById('gx-ex7-rvft'); if(!wrap) return;
+      wrap.innerHTML='';
+      RVFT_Q.forEach((q,qi)=>{
+        const letters=['A','B','C'];
+        const div=el('<div style="margin-bottom:18px;padding:14px;background:var(--gray-lt);border:1.5px solid var(--gray-bdr);border-radius:12px;" data-q="'+q.id+'">'+
+          '<div style="font-size:10px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Cas '+(qi+1)+' / '+RVFT_Q.length+'</div>'+
+          '<p style="font-size:13px;font-weight:600;color:var(--navy);line-height:1.6;margin-bottom:12px;">'+q.text+'</p>'+
+          '<div class="gx-opts ex7-opts" data-qid="'+q.id+'">'+
+            q.opts.map((o,i)=>'<div class="gx-opt ex7-ropt" data-qid="'+q.id+'" data-idx="'+i+'"><div class="gx-opt-radio">'+letters[i]+'</div><div class="gx-opt-text">'+o+'</div></div>').join('')+
+          '</div>'+
+        '</div>');
+        wrap.appendChild(div);
+      });
+      wrap.querySelectorAll('.ex7-ropt').forEach(opt=>{
+        opt.onclick=()=>{
+          const qid=opt.dataset.qid;
+          rvftAnswers[qid]=+opt.dataset.idx;
+          wrap.querySelectorAll('.ex7-ropt[data-qid="'+qid+'"]').forEach(o=>{ o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+          opt.classList.add('selected'); opt.style.borderColor='var(--teal)'; opt.style.background='var(--teal-lt)';
+          document.getElementById('gx-ex7-rvft-check').disabled=RVFT_Q.some(q=>rvftAnswers[q.id]===undefined);
+        };
+      });
+    }
+    function checkRvft(){
+      let ok=0;
+      const wrap=document.getElementById('gx-ex7-rvft');
+      RVFT_Q.forEach(q=>{
+        const chosen=rvftAnswers[q.id]; const correct=chosen===q.ok;
+        if(correct) ok++;
+        wrap.querySelectorAll('.ex7-ropt[data-qid="'+q.id+'"]').forEach(opt=>{
+          const idx=+opt.dataset.idx; opt.classList.add('gx-locked');
+          if(idx===q.ok){ opt.style.borderColor='var(--green)'; opt.style.background='var(--green-lt)'; }
+          else if(idx===chosen&&!correct){ opt.style.borderColor='var(--red)'; opt.style.background='var(--red-lt)'; }
+        });
+        const qDiv=wrap.querySelector('[data-q="'+q.id+'"]');
+        if(qDiv){
+          const expDiv=document.createElement('div');
+          expDiv.style.cssText='margin-top:10px;padding:10px 14px;background:'+(correct?'var(--green-lt)':'var(--red-lt)')+';border-left:3px solid '+(correct?'var(--green)':'var(--red)')+';border-radius:0 8px 8px 0;font-size:12px;color:var(--gray-dk);line-height:1.6;';
+          expDiv.innerHTML=(correct?'\u2705 ':'\u274c ')+'<strong>'+q.opts[q.ok]+'</strong> \u2014 '+q.exp;
+          qDiv.appendChild(expDiv);
+        }
+      });
+      if(ok===RVFT_Q.length){ fb('gx-ex7-fb-rvft','good','<p>Parfait ! Vous ma\u00eetrisez la distinction RAG vs Fine-tuning \u2014 cl\u00e9 pour cadrer les projets IA avec les bons outils.</p>'); rvftDone=true; maybeComplete(); }
+      else fb('gx-ex7-fb-rvft','bad','<p>'+ok+'/'+RVFT_Q.length+' correct. Relisez la section RAG vs Fine-tuning pour affiner votre jugement.</p>');
+    }
+    function maybeComplete(){ if(seqDone&&mcpDone&&rvftDone) complete('rag','\ud83c\udfc5 Orchestrateur RAG & MCP'); }
     function checkMcp(){
       let ok=true;
       TOOLS.forEach(t=>{ if(!!mcpSel[t.id]!==t.need) ok=false; });
@@ -722,8 +800,7 @@ const GX = (function(){
       if(ok){ fb('gx-ex7-fb-mcp','good','<p>Parfait : on ne branche via MCP que les outils <b>utiles à la tâche</b> (agenda, salle, e-mail). Donner trop d\'outils augmente le risque et le coût.</p>'); mcpDone=true; maybeComplete(); }
       else fb('gx-ex7-fb-mcp','bad','<p>Il faut exactement <b>Agenda + Réservation de salle + E-mail</b>. Le reste n\'est pas nécessaire — le principe MCP : connecter le strict utile.</p>');
     }
-    function maybeComplete(){ if(seqDone&&mcpDone) complete('rag','🏅 Orchestrateur RAG & MCP'); }
-    return { init, checkSeq, checkMcp, reset:()=>{Object.keys(mcpSel).forEach(k=>delete mcpSel[k]);seqDone=false;mcpDone=false;init();} };
+    return { init, checkSeq, checkMcp, checkRvft, reset:()=>{Object.keys(mcpSel).forEach(k=>delete mcpSel[k]);rvftAnswers={};seqDone=false;mcpDone=false;rvftDone=false;init();renderRvft();} };
   })();
 
   /* ===================================================================
