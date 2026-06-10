@@ -584,7 +584,22 @@
         </div>
       </div>
     </div>
-    <div class="reveal rv3">
+    <!-- SECTION: DEEP LEARNING BRIDGE -->
+    <div class="reveal rv3" style="margin-bottom:32px;">
+      <div style="background:linear-gradient(135deg,var(--navy-dk),var(--purple));border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:20px;">
+        <div style="font-size:36px;flex-shrink:0;">🔬</div>
+        <div>
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;">Le Deep Learning — ce qui rend les LLM possibles</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.8);line-height:1.7;">Les LLM sont des <strong style="color:var(--teal-lt);">réseaux de neurones profonds</strong> (milliards de paramètres) entraînés sur des centaines de milliards de mots. L'architecture <strong style="color:var(--teal-lt);">Transformer</strong> (Google, 2017) est la clé : elle permet au modèle de comprendre le <em>sens</em> des mots selon leur contexte, pas juste leur forme.</div>
+        </div>
+        <div style="flex-shrink:0;text-align:center;background:rgba(255,255,255,.1);border-radius:10px;padding:12px 16px;">
+          <div style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--teal-lt);">~1T</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:2px;">paramètres GPT-4</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal rv3" style="margin-bottom:0;">
       <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">Modèle · LLM · Agent : les vraies différences</h3>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
         <div style="background:#fff;border:2px solid var(--gray-bdr);border-radius:14px;overflow:hidden;">
@@ -606,7 +621,7 @@
           <div style="padding:16px;">
             <span class="badge badge-teal" style="margin-bottom:10px;">Général, conversationnel</span>
             <p style="font-size:12px;color:var(--gray);line-height:1.65;margin-bottom:8px;">Comprend et génère du texte. Répond à des instructions en langage naturel.</p>
-            <div style="font-size:11px;color:var(--teal-dk);font-style:italic;">Ex : GPT-4, Claude, Gemini, Mistral</div>
+            <div style="font-size:11px;color:var(--teal-dk);font-style:italic;">Ex : GPT-4.1 / o3, Claude Sonnet 4.6, Gemini 2.5 Pro, Mistral Large 2</div>
           </div>
         </div>
         <div style="background:#fff;border:2px solid var(--gray-bdr);border-radius:14px;overflow:hidden;">
@@ -622,6 +637,311 @@
         </div>
       </div>
     </div>
+
+    <!-- SECTION: TOKENS -->
+    <div class="reveal rv4" style="margin-top:40px;margin-bottom:32px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;">Concepts clés : Tokens & Fenêtre de contexte</h3>
+      <p style="font-size:12px;color:var(--gray);margin-bottom:14px;">Comprendre ces 2 notions, c'est comprendre les limites et les coûts des LLM.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:12px;padding:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:30px;height:30px;border-radius:8px;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🔤</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);">Token</div>
+          </div>
+          <p style="font-size:11px;color:var(--gray);line-height:1.65;margin-bottom:10px;">Unité de texte traitée par le LLM. Ni mot, ni lettre : <strong>≈ 0,75 mot</strong> en moyenne. "converteo" = 3 tokens.</p>
+          <div style="background:var(--teal-lt);border-radius:6px;padding:8px 10px;font-size:10px;color:var(--teal-dk);">💶 Les API facturent au nombre de tokens (entrée + sortie)</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:12px;padding:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:30px;height:30px;border-radius:8px;background:var(--violet-lt);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📐</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);">Contexte</div>
+          </div>
+          <p style="font-size:11px;color:var(--gray);line-height:1.65;margin-bottom:10px;">Nombre max de tokens que le modèle peut "voir" en même temps. Détermine ce qu'on peut lui soumettre en une requête.</p>
+          <div style="background:var(--violet-lt);border-radius:6px;padding:8px 10px;font-size:10px;color:var(--navy);">📄 128k tokens ≈ 100 pages PDF</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:12px;padding:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:30px;height:30px;border-radius:8px;background:var(--gold-lt);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🗺️</div>
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);">Embedding</div>
+          </div>
+          <p style="font-size:11px;color:var(--gray);line-height:1.65;margin-bottom:10px;">Représentation mathématique du <em>sens</em> d'un texte sous forme de vecteur. Clé pour la recherche sémantique et le RAG.</p>
+          <div style="background:var(--gold-lt);border-radius:6px;padding:8px 10px;font-size:10px;color:#92400E;">🔍 Fondement technique du RAG (Module 07)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: PROMPTING -->
+    <div class="reveal rv4" style="margin-top:32px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">L'art du prompting — Comment parler à un LLM</h3>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+        <div class="prompt-tip">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <div style="width:34px;height:34px;border-radius:9px;background:var(--teal-lt);border:1.5px solid rgba(0,178,178,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎯</div>
+            <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);">Soyez précis</div>
+          </div>
+          <div style="background:var(--red-lt);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 12px;margin-bottom:6px;">
+            <div style="font-size:11px;color:#991B1B;">❌ "Analyse ces données"</div>
+          </div>
+          <div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 12px;">
+            <div style="font-size:11px;color:#065F46;">✅ "Analyse ces 500 avis clients Q3 et identifie les 3 irritants les plus fréquents avec pourcentages"</div>
+          </div>
+        </div>
+        <div class="prompt-tip">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <div style="width:34px;height:34px;border-radius:9px;background:var(--teal-lt);border:1.5px solid rgba(0,178,178,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎭</div>
+            <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);">Donnez un rôle</div>
+          </div>
+          <div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 12px;">
+            <div style="font-size:11px;color:#065F46;">✅ "Tu es un analyste data senior chez Converteo. Ta mission : synthétiser ce rapport pour le COMEX."</div>
+          </div>
+        </div>
+        <div class="prompt-tip">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <div style="width:34px;height:34px;border-radius:9px;background:var(--teal-lt);border:1.5px solid rgba(0,178,178,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📋</div>
+            <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);">Structurez le format</div>
+          </div>
+          <div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 12px;">
+            <div style="font-size:11px;color:#065F46;">✅ "Réponds au format : 1) Insight principal, 2) Chiffres clés, 3) Recommandation action"</div>
+          </div>
+        </div>
+        <div class="prompt-tip">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <div style="width:34px;height:34px;border-radius:9px;background:var(--teal-lt);border:1.5px solid rgba(0,178,178,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🔄</div>
+            <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);">Itérez</div>
+          </div>
+          <div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 12px;">
+            <div style="font-size:11px;color:#065F46;">✅ "Reformule en 3 bullet points maximum pour une présentation client"</div>
+          </div>
+        </div>
+      </div>
+      <!-- Chain of thought tip - full width -->
+      <div style="margin-top:12px;background:#fff;border:1.5px solid var(--teal);border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;">
+        <div style="width:34px;height:34px;border-radius:9px;background:var(--teal-lt);border:1.5px solid rgba(0,178,178,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🧩</div>
+        <div style="flex:1;">
+          <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;">Chain of Thought — Faites raisonner le modèle</div>
+          <p style="font-size:11px;color:var(--gray);margin-bottom:8px;line-height:1.6;">Demander au LLM de <strong>penser étape par étape</strong> améliore drastiquement la qualité sur les tâches complexes. Ne donnez pas directement la réponse attendue : guidez le raisonnement.</p>
+          <div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 12px;">
+            <div style="font-size:11px;color:#065F46;">✅ "Analyse d'abord les données brutes, identifie les tendances, puis formule 3 hypothèses, et enfin donne ta recommandation finale."</div>
+          </div>
+        </div>
+        <span style="flex-shrink:0;background:var(--teal-lt);color:var(--teal-dk);font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;">AVANCÉ</span>
+      </div>
+    </div>
+
+    <!-- SECTION: LLM COMPARISON -->
+    <div class="reveal rv5" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;">Les LLM en 2026 — Le paysage actuel</h3>
+      <p style="font-size:12px;color:var(--gray);margin-bottom:16px;">5 familles majeures à connaître, chacune avec son positionnement et ses spécifications propres.</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+        <!-- OpenAI -->
+        <div class="llm-card">
+          <div style="background:linear-gradient(135deg,#10A37F,#00B488);padding:18px;border-radius:12px 12px 0 0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-family:var(--font-head);font-size:17px;font-weight:800;color:#fff;margin-bottom:2px;">GPT-5.4 / o3</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.8);letter-spacing:1px;">OpenAI</div>
+              </div>
+              <span style="background:rgba(255,255,255,.2);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">LEADER MARCHÉ</span>
+            </div>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-top:none;border-radius:0 0 12px 12px;padding:16px;">
+            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span><strong>o3</strong> : raisonnement systémique (maths, logique, planification)</span></div>
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span><strong>GPT-5.4</strong> : contexte <strong>2M tokens</strong>, multimodal ultra-rapide</span></div>
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Excellence inégalée en génération de code</span></div>
+            </div>
+            <div style="padding:10px 12px;background:var(--teal-lt);border-radius:6px;font-size:11px;color:var(--teal-dk);">📌 Idéal : analyses stratégiques complexes, ingénierie logicielle avancée, agents IA autonomes</div>
+          </div>
+        </div>
+        <!-- Anthropic -->
+        <div class="llm-card">
+          <div style="background:linear-gradient(135deg,#D97757,#C65A3C);padding:18px;border-radius:12px 12px 0 0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-family:var(--font-head);font-size:17px;font-weight:800;color:#fff;margin-bottom:2px;">Claude 4.7</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.8);letter-spacing:1px;">Anthropic</div>
+              </div>
+              <span style="background:rgba(255,255,255,.2);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">TOP RÉDACTION</span>
+            </div>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-top:none;border-radius:0 0 12px 12px;padding:16px;">
+            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span><strong>Sonnet</strong> vitesse/perf · <strong>Opus</strong> tâches ultra-complexes</span></div>
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Fenêtre contexte <strong>500k tokens</strong>, meilleur suivi d'instructions</span></div>
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Sécurité par conception — <em>Constitutional AI</em>, moins d'hallucinations</span></div>
+            </div>
+            <div style="padding:10px 12px;background:var(--teal-lt);border-radius:6px;font-size:11px;color:var(--teal-dk);">📌 Idéal : contrats juridiques, rapports longs, compliance, livrables clients haute qualité</div>
+          </div>
+        </div>
+        <!-- Google -->
+        <div class="llm-card">
+          <div style="background:linear-gradient(135deg,#4285F4,#34A853);padding:18px;border-radius:12px 12px 0 0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-family:var(--font-head);font-size:17px;font-weight:800;color:#fff;margin-bottom:2px;">Gemini 2.5 Pro</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.8);letter-spacing:1px;">Google DeepMind</div>
+              </div>
+              <span style="background:rgba(255,255,255,.2);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">CHAMPION CONTEXTE</span>
+            </div>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-top:none;border-radius:0 0 12px 12px;padding:16px;">
+            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Contexte <strong>2 millions de tokens</strong> — avale des bases entières</span></div>
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Multimodalité native : vidéo, audio brut, image, code</span></div>
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Deep Research + synergie totale Google Workspace / GCP</span></div>
+            </div>
+            <div style="padding:10px 12px;background:var(--teal-lt);border-radius:6px;font-size:11px;color:var(--teal-dk);">📌 Idéal : veille massive, analyse vidéo/podcast, RAG sur vastes corpus, recherche scientifique</div>
+          </div>
+        </div>
+        <!-- Mistral -->
+        <div class="llm-card">
+          <div style="background:linear-gradient(135deg,#FF7000,#D15E00);padding:18px;border-radius:12px 12px 0 0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-family:var(--font-head);font-size:17px;font-weight:800;color:#fff;margin-bottom:2px;">Mistral Large</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.8);letter-spacing:1px;">Mistral AI 🇫🇷</div>
+              </div>
+              <span style="background:rgba(255,255,255,.2);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">SOUVERAINETÉ EU</span>
+            </div>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-top:none;border-radius:0 0 12px 12px;padding:16px;">
+            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Hébergement Europe — conformité RGPD stricte et native</span></div>
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Fenêtre contexte <strong>256k tokens</strong>, multilingue européen</span></div>
+              <div style="font-size:11px;color:#065F46;display:flex;align-items:center;gap:6px;"><span>✓</span><span>Excellent Function Calling & on-premise (cloud privé ou air-gapped)</span></div>
+            </div>
+            <div style="padding:10px 12px;background:var(--teal-lt);border-radius:6px;font-size:11px;color:var(--teal-dk);">📌 Idéal : projets Enterprise français, secteurs régulés (banque, santé, défense, secteur public)</div>
+          </div>
+        </div>
+      </div>
+      <!-- Llama full card -->
+      <div class="llm-card" style="margin-top:14px;">
+        <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);padding:18px;border-radius:12px 12px 0 0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="font-size:22px;">🦙</div>
+              <div>
+                <div style="font-family:var(--font-head);font-size:17px;font-weight:800;color:#fff;margin-bottom:2px;">Llama 3.3 — 70B & 405B</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.8);letter-spacing:1px;">Meta · Open Weights</div>
+              </div>
+            </div>
+            <span style="background:rgba(255,255,255,.15);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">OPEN SOURCE & ON-PREMISE</span>
+          </div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-top:none;border-radius:0 0 12px 12px;padding:16px;">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;">
+            <div style="font-size:11px;color:#065F46;display:flex;align-items:flex-start;gap:6px;"><span style="flex-shrink:0;">✓</span><span>Modèle <strong>gratuit</strong> (licence libre entreprises &lt;700M users)</span></div>
+            <div style="font-size:11px;color:#065F46;display:flex;align-items:flex-start;gap:6px;"><span style="flex-shrink:0;">✓</span><span>Fenêtre contexte <strong>128k tokens</strong>, excellent rapport coût/perf matériel</span></div>
+            <div style="font-size:11px;color:#065F46;display:flex;align-items:flex-start;gap:6px;"><span style="flex-shrink:0;">✓</span><span>Hébergement <strong>100 % local</strong> — aucune donnée ne sort de l'infrastructure</span></div>
+          </div>
+          <div style="padding:10px 12px;background:var(--teal-lt);border-radius:6px;font-size:11px;color:var(--teal-dk);">📌 Idéal : IA interne sans coût de licence, environnements air-gapped, protection de la propriété intellectuelle</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:12px 16px;background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;font-size:12px;color:var(--gray-dk);">💡 <strong style="color:var(--navy);">Le bon réflexe consultant :</strong> Il n'y a pas "le meilleur" LLM. Le choix dépend du cas d'usage, du budget, des contraintes de confidentialité et de la souveraineté des données. Posez toujours la question : <strong>"où sont hébergées les données ?"</strong></div>
+      <!-- HALLUCINATIONS WARNING -->
+      <div style="margin-top:14px;background:var(--red-lt);border:1.5px solid var(--red);border-radius:10px;padding:14px 16px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div style="font-size:20px;">⚠️</div>
+          <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#991B1B;">Les hallucinations — Le risque n°1 à connaître</div>
+          <span style="margin-left:auto;flex-shrink:0;background:#991B1B;color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">CRITIQUE</span>
+        </div>
+        <p style="font-size:11px;color:#7F1D1D;line-height:1.7;margin-bottom:8px;">Un LLM peut <strong>inventer des faits avec confiance</strong> : chiffres, citations, noms, dates, références — tout en paraissant absolument certain. Ce n'est pas un bug, c'est une limite structurelle du modèle.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:10px 12px;font-size:11px;color:#7F1D1D;">❌ Citer des études inexistantes dans un rapport client</div>
+          <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:10px 12px;font-size:11px;color:#7F1D1D;">❌ Inventer des statistiques de marché avec des décimales convaincantes</div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:#065F46;font-weight:600;">✅ Règle d'or : toujours vérifier les faits chiffrés et les sources générés par un LLM avant livraison client.</div>
+      </div>
+    </div>
+
+    <!-- SECTION: CAS D'USAGE CONVERTEO -->
+    <div class="reveal rv6" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;">🎯 Agents IA en action chez Converteo — Cas réels</h3>
+      <p style="font-size:12px;color:var(--gray);margin-bottom:16px;">Des projets livrés pour nos clients — de l'idée à la production.</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+
+        <!-- CARD 1 : Fnac Darty — Agent Mira -->
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:14px;overflow:hidden;transition:all .2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)';this.style.borderColor='var(--teal)';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='';">
+          <div style="background:#fff;border-bottom:1.5px solid var(--gray-bdr);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <img src="img/nl2543-logo-my-retailink-2.png" alt="MyRetailLink by Fnac Darty" style="height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div style="display:none;font-family:var(--font-head);font-size:14px;font-weight:800;color:var(--navy);">Fnac Darty</div>
+            <span style="background:var(--teal-lt);color:var(--teal-dk);font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">Agent IA Data</span>
+          </div>
+          <div style="padding:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <div style="width:28px;height:28px;border-radius:7px;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🤖</div>
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);">Agent Mira</div>
+            </div>
+            <p style="font-size:11px;color:var(--gray);line-height:1.7;margin-bottom:10px;">Accès rapide et intelligent aux données dashboards : <strong>analyse globale</strong>, recommandations contextuelles et comparaisons inter-enseignes — avec une gouvernance stricte via <strong>Row-Level Security</strong> (datascopes, permissions et restrictions par utilisateur).</p>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+              <span style="background:var(--teal-lt);color:var(--teal-dk);font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Data Analytics</span>
+              <span style="background:var(--navy);color:#fff;font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">RLS / Gouvernance</span>
+              <span style="background:var(--violet-lt);color:var(--navy);font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Multi-enseignes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2 : Lacoste — Bot Support Client -->
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:14px;overflow:hidden;transition:all .2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)';this.style.borderColor='var(--teal)';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='';">
+          <div style="background:#fff;border-bottom:1.5px solid var(--gray-bdr);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <img src="img/lacost.png" alt="Lacoste" style="height:36px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div style="display:none;font-family:var(--font-head);font-size:14px;font-weight:800;color:var(--navy);">Lacoste</div>
+            <span style="background:var(--teal-lt);color:var(--teal-dk);font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">Agent Support</span>
+          </div>
+          <div style="padding:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <div style="width:28px;height:28px;border-radius:7px;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">💬</div>
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);">Bot Support Client</div>
+            </div>
+            <p style="font-size:11px;color:var(--gray);line-height:1.7;margin-bottom:10px;">Bot conversationnel dédié au support client — <strong>FAQ, CGV, suivi OMS</strong> — avec escalade intelligente vers les équipes humaines pour les cas complexes.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+              <span style="background:var(--teal-lt);color:var(--teal-dk);font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">CX / Support</span>
+              <span style="background:var(--green-lt);color:#065F46;font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Escalade humaine</span>
+              <span style="background:var(--gold-lt);color:#92400E;font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Suivi OMS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3 : L'Oréal — YouTube Reach Agent -->
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:14px;overflow:hidden;transition:all .2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)';this.style.borderColor='var(--teal)';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='';">
+          <div style="background:#fff;border-bottom:1.5px solid var(--gray-bdr);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <img src="img/l-oreal-2-logo-png-transparent.png" alt="L'Oréal Paris" style="height:36px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div style="display:none;font-family:var(--font-head);font-size:14px;font-weight:800;color:var(--navy);">L'Oréal</div>
+            <span style="background:#FFE4E4;color:#991B1B;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">Agent Media</span>
+          </div>
+          <div style="padding:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <div style="width:28px;height:28px;border-radius:7px;background:#FFE4E4;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">▶️</div>
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);">YouTube Reach Agent</div>
+            </div>
+            <p style="font-size:11px;color:var(--gray);line-height:1.7;margin-bottom:10px;">IA conversationnelle qui analyse les <strong>performances de couverture des campagnes YouTube</strong> de L'Oréal et génère des rapports standardisés à la demande. Elle fait le lien entre les données internes et le potentiel du marché mondial pour <strong>optimiser les stratégies médias</strong> — bien au-delà des dashboards traditionnels.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+              <span style="background:#FFE4E4;color:#991B1B;font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Media Analytics</span>
+              <span style="background:var(--teal-lt);color:var(--teal-dk);font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">YouTube / Reach</span>
+              <span style="background:var(--gold-lt);color:#92400E;font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Reporting IA</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4 : Sosh — Voice Agent Sharlie -->
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:14px;overflow:hidden;transition:all .2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)';this.style.borderColor='var(--teal)';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='';">
+          <div style="background:#fff;border-bottom:1.5px solid var(--gray-bdr);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <img src="img/sosh.png" alt="Sosh" style="height:32px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div style="display:none;font-family:var(--font-head);font-size:14px;font-weight:800;color:var(--navy);">Sosh</div>
+            <span style="background:var(--teal-lt);color:var(--teal-dk);font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;">Voice Agent</span>
+          </div>
+          <div style="padding:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <div style="width:28px;height:28px;border-radius:7px;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🎙️</div>
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);">Sharlie — Conseillère client vocale</div>
+            </div>
+            <p style="font-size:11px;color:var(--gray);line-height:1.7;margin-bottom:10px;">Agent <strong>Voice-to-Voice</strong> qui joue le rôle de conseillère client virtuelle : accompagnement à l'achat (téléphone, forfait, accessoires), explication de facture et suivi des consommations — en langage naturel, à la voix.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+              <span style="background:var(--teal-lt);color:var(--teal-dk);font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Voice-to-Voice</span>
+              <span style="background:var(--green-lt);color:#065F46;font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Conseil achat</span>
+              <span style="background:var(--gold-lt);color:#92400E;font-size:9px;font-weight:600;padding:3px 7px;border-radius:20px;">Suivi facture</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
     <!-- ============ EXERCISE · MODULE 05 · AI scenario MCQ ============ -->
     <div class="gx-ex reveal" id="gx-ex5" data-gx-module="ai">
       <div class="gx-ex-head">
@@ -630,7 +950,7 @@
           <div class="gx-ex-eyebrow">Exercice interactif · 3 min</div>
           <div class="gx-ex-title">Un client vous décrit son besoin — quelle techno conseillez-vous ?</div>
         </div>
-        <div class="gx-ex-score" id="gx-ex5-score">0 / 4</div>
+        <div class="gx-ex-score" id="gx-ex5-score">0 / 6</div>
       </div>
       <div class="gx-ex-body">
         <p class="gx-instr">Pour chaque brief client, choisissez la solution IA la plus adaptée. Un seul bon choix par scénario.</p>
@@ -669,14 +989,14 @@
             <div class="l-badge"><span class="badge badge-ghost">Framework</span></div>
             <div class="l-title">La boîte de jeu</div>
             <div class="l-body">Les règles, l'environnement, les contraintes du système.</div>
-            <div class="l-tools">LangChain, AutoGen</div>
+            <div class="l-tools">ADK, LangChain</div>
           </div>
           <div class="lego-card" style="border-color:rgba(0,178,178,.4);background:rgba(0,178,178,.06);">
             <div class="l-icon">🧠</div>
             <div class="l-badge"><span class="badge badge-teal">LLM</span></div>
             <div class="l-title">Le cerveau</div>
             <div class="l-body">La capacité de raisonnement, compréhension et génération.</div>
-            <div class="l-tools">GPT-4, Claude, Mistral</div>
+            <div class="l-tools">Gemini, Claude, Mistral</div>
           </div>
           <div class="lego-card">
             <div class="l-icon">🔧</div>
@@ -714,6 +1034,173 @@
         </div>
       </div>
     </div>
+
+    <!-- SECTION: TIMELINE EVOLUTION -->
+    <div class="reveal rv3" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">📈 L'évolution : du chatbot à l'agent autonome</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;padding:20px;transition:all .2s;" onmouseover="this.style.borderColor='rgba(239,68,68,.4)';" onmouseout="this.style.borderColor='rgba(255,255,255,.12)';">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal);letter-spacing:1.5px;margin-bottom:8px;">2020-2021</div>
+          <div style="font-size:32px;margin-bottom:12px;">💬</div>
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Chatbots scriptés</div>
+          <div style="font-size:12px;color:#8B8ECA;line-height:1.6;margin-bottom:10px;">Réponses pré-programmées, arbre de décision fixe. Pas d'adaptation.</div>
+          <div style="padding:8px 10px;background:rgba(239,68,68,.12);border-radius:6px;font-size:11px;color:#FCA5A5;">❌ Rigide, limité aux cas prévus</div>
+        </div>
+        <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;padding:20px;transition:all .2s;" onmouseover="this.style.borderColor='rgba(245,158,11,.4)';" onmouseout="this.style.borderColor='rgba(255,255,255,.12)';">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal);letter-spacing:1.5px;margin-bottom:8px;">2022-2023</div>
+          <div style="font-size:32px;margin-bottom:12px;">🧠</div>
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">LLM conversationnels</div>
+          <div style="font-size:12px;color:#8B8ECA;line-height:1.6;margin-bottom:10px;">ChatGPT, Claude : comprennent le langage naturel, génèrent des réponses contextuelles.</div>
+          <div style="padding:8px 10px;background:rgba(245,158,11,.12);border-radius:6px;font-size:11px;color:#FCD34D;">⚠️ Passifs, sans actions concrètes</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(0,178,178,.15),rgba(124,58,237,.1));border:2px solid var(--teal);border-radius:14px;padding:20px;transition:all .2s;box-shadow:0 0 0 4px rgba(0,178,178,.08);">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal);letter-spacing:1.5px;margin-bottom:8px;">2024-2026</div>
+          <div style="font-size:32px;margin-bottom:12px;">🤖</div>
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Agents IA autonomes</div>
+          <div style="font-size:12px;color:#cfd1ec;line-height:1.6;margin-bottom:10px;">LLM + outils + mémoire + planification. Capables d'exécuter des tâches multi-étapes sans supervision.</div>
+          <div style="padding:8px 10px;background:rgba(16,185,129,.18);border-radius:6px;font-size:11px;color:#A7F3D0;">✅ Proactifs, autonomes, orientés action</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: ANATOMIE D'UN AGENT -->
+    <div class="reveal rv4" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">🔬 Anatomie technique d'un agent IA</h3>
+      <div style="background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:rgba(0,178,178,.2);border:1px solid rgba(0,178,178,.4);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--teal);flex-shrink:0;">1</div>
+            <div style="flex:1;">
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">🧠 Cerveau (LLM)</div>
+              <div style="font-size:12px;color:#8B8ECA;line-height:1.6;margin-bottom:4px;">Raisonnement, compréhension, génération</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal);">GPT-4, Claude, Gemini, Mistral</div>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,.08);"></div>
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:rgba(0,178,178,.2);border:1px solid rgba(0,178,178,.4);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--teal);flex-shrink:0;">2</div>
+            <div style="flex:1;">
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">🔧 Boîte à outils (Tools)</div>
+              <div style="font-size:12px;color:#8B8ECA;line-height:1.6;margin-bottom:4px;">Actions concrètes : lire fichiers, requêter BDD, envoyer emails, appeler APIs</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal);">Functions calling, MCP, plugins</div>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,.08);"></div>
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:rgba(0,178,178,.2);border:1px solid rgba(0,178,178,.4);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--teal);flex-shrink:0;">3</div>
+            <div style="flex:1;">
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">💾 Mémoire</div>
+              <div style="font-size:12px;color:#8B8ECA;line-height:1.6;margin-bottom:4px;"><strong style="color:#fff;">Court terme :</strong> conversation en cours<br><strong style="color:#fff;">Long terme :</strong> base vectorielle (RAG) pour rappeler contextes passés</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal);">Pinecone, Weaviate, ChromaDB</div>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,.08);"></div>
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:rgba(0,178,178,.2);border:1px solid rgba(0,178,178,.4);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--teal);flex-shrink:0;">4</div>
+            <div style="flex:1;">
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">🗺️ Planificateur</div>
+              <div style="font-size:12px;color:#8B8ECA;line-height:1.6;margin-bottom:4px;">Décompose une tâche complexe en sous-étapes, décide de l'ordre d'exécution</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal);">ReAct, Chain-of-Thought, Tree of Thoughts</div>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,.08);"></div>
+          <div style="display:flex;align-items:flex-start;gap:16px;">
+            <div style="width:36px;height:36px;border-radius:9px;background:rgba(0,178,178,.2);border:1px solid rgba(0,178,178,.4);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--teal);flex-shrink:0;">5</div>
+            <div style="flex:1;">
+              <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">🔁 Boucle d'exécution</div>
+              <div style="font-size:12px;color:#8B8ECA;line-height:1.6;margin-bottom:4px;">Observe → Réfléchit → Agit → Observe le résultat → Réitère jusqu'à complétion</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal);">ReAct loop, self-reflection</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: FRAMEWORKS -->
+    <div class="reveal rv5" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">🛠 Frameworks d'agents — Les outils du marché</h3>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+        <!-- ADK — Google (en premier) -->
+        <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(66,133,244,.35);border-radius:12px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,rgba(66,133,244,.25),rgba(52,168,83,.15));padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-family:var(--font-head);font-size:15px;font-weight:800;color:#fff;margin-bottom:2px;">ADK — Agent Development Kit</div>
+              <div style="font-size:10px;color:#93C5FD;">by Google</div>
+            </div>
+            <span style="background:rgba(66,133,244,.3);color:#93C5FD;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;">NOUVEAU 2025</span>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;color:#cfd1ec;line-height:1.65;margin-bottom:10px;">Framework open source de Google pour construire, tester et déployer des agents IA. Supporte nativement l'orchestration multi-agents et l'intégration avec Gemini et Google Cloud.</div>
+            <div style="padding:10px 12px;background:rgba(66,133,244,.12);border-radius:6px;font-size:11px;color:#93C5FD;">📌 Quand l'utiliser : projets sur GCP, intégration Gemini, agents multi-étapes avec outils Google</div>
+          </div>
+        </div>
+        <!-- LangGraph -->
+        <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,rgba(0,178,178,.2),rgba(0,178,178,.1));padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);">
+            <div style="font-family:var(--font-head);font-size:15px;font-weight:800;color:#fff;margin-bottom:2px;">LangGraph</div>
+            <div style="font-size:10px;color:#8B8ECA;">by LangChain</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;color:#cfd1ec;line-height:1.65;margin-bottom:10px;">Construction d'agents avec workflows stateful et cycles de rétroaction</div>
+            <div style="padding:10px 12px;background:rgba(0,178,178,.12);border-radius:6px;font-size:11px;color:#5eead4;">📌 Quand l'utiliser : agents complexes multi-outils avec orchestration fine</div>
+          </div>
+        </div>
+        <!-- AutoGen -->
+        <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,rgba(0,120,212,.2),rgba(0,99,177,.1));padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);">
+            <div style="font-family:var(--font-head);font-size:15px;font-weight:800;color:#fff;margin-bottom:2px;">AutoGen</div>
+            <div style="font-size:10px;color:#8B8ECA;">by Microsoft</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;color:#cfd1ec;line-height:1.65;margin-bottom:10px;">Agents multi-agents conversationnels qui collaborent entre eux</div>
+            <div style="padding:10px 12px;background:rgba(0,178,178,.12);border-radius:6px;font-size:11px;color:#5eead4;">📌 Quand l'utiliser : simuler une équipe d'agents spécialisés (analyste + rédacteur + reviewer)</div>
+          </div>
+        </div>
+        <!-- CrewAI -->
+        <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,rgba(255,112,0,.2),rgba(209,94,0,.1));padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);">
+            <div style="font-family:var(--font-head);font-size:15px;font-weight:800;color:#fff;margin-bottom:2px;">CrewAI</div>
+            <div style="font-size:10px;color:#8B8ECA;">Open source</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:12px;color:#cfd1ec;line-height:1.65;margin-bottom:10px;">Orchestration d'équipes d'agents avec rôles et objectifs définis</div>
+            <div style="padding:10px 12px;background:rgba(0,178,178,.12);border-radius:6px;font-size:11px;color:#5eead4;">📌 Quand l'utiliser : workflows métier avec rôles clairs (chef de projet + analystes + exécutants)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: LIMITES ET RISQUES -->
+    <div class="reveal rv6" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">⚠️ Limites et risques de l'IA agentique</h3>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:14px;">
+        <div style="background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.25);border-radius:12px;padding:16px;">
+          <div style="font-size:24px;margin-bottom:8px;">💸</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Coût d'exécution</div>
+          <div style="font-size:12px;color:#cfd1ec;line-height:1.6;margin-bottom:8px;">Un agent qui itère 20 fois peut générer des coûts API importants. Toujours fixer un budget max par tâche.</div>
+          <div style="padding:8px 10px;background:rgba(16,185,129,.12);border-radius:6px;font-size:11px;color:#A7F3D0;">🛡 Garde-fou : limiter le nombre de loops, timeout, budget token</div>
+        </div>
+        <div style="background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.25);border-radius:12px;padding:16px;">
+          <div style="font-size:24px;margin-bottom:8px;">🔓</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Sécurité</div>
+          <div style="font-size:12px;color:#cfd1ec;line-height:1.6;margin-bottom:8px;">Un agent avec accès BDD peut exécuter des requêtes dangereuses si mal prompt-injectioné.</div>
+          <div style="padding:8px 10px;background:rgba(16,185,129,.12);border-radius:6px;font-size:11px;color:#A7F3D0;">🛡 Garde-fou : permissions strictes, validation humaine pour actions critiques</div>
+        </div>
+        <div style="background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.25);border-radius:12px;padding:16px;">
+          <div style="font-size:24px;margin-bottom:8px;">🎭</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Hallucinations</div>
+          <div style="font-size:12px;color:#cfd1ec;line-height:1.6;margin-bottom:8px;">Le LLM peut inventer des données ou actions qui n'existent pas.</div>
+          <div style="padding:8px 10px;background:rgba(16,185,129,.12);border-radius:6px;font-size:11px;color:#A7F3D0;">🛡 Garde-fou : toujours sourcer les faits, validation humaine finale</div>
+        </div>
+        <div style="background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.25);border-radius:12px;padding:16px;">
+          <div style="font-size:24px;margin-bottom:8px;">♾️</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Boucles infinies</div>
+          <div style="font-size:12px;color:#cfd1ec;line-height:1.6;margin-bottom:8px;">Un agent mal calibré peut boucler indéfiniment sans converger.</div>
+          <div style="padding:8px 10px;background:rgba(16,185,129,.12);border-radius:6px;font-size:11px;color:#A7F3D0;">🛡 Garde-fou : max iterations (ex: 10), timeout global, surveillance logs</div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;background:rgba(16,185,129,.12);border-left:4px solid var(--green);border-radius:0 8px 8px 0;font-size:12px;color:#cfd1ec;">✅ <strong style="color:#fff;">Règle d'or :</strong> Commencez par un humain dans la boucle (human-in-the-loop) pour les actions critiques. L'autonomie totale se gagne progressivement avec la confiance.</div>
+    </div>
     <!-- ============ EXERCISE · MODULE 06 · Agent builder ============ -->
     <div class="gx-ex gx-on-dark reveal" id="gx-ex6" data-gx-module="agents">
       <div class="gx-ex-head">
@@ -722,14 +1209,14 @@
           <div class="gx-ex-eyebrow">Atelier interactif · 2 min</div>
           <div class="gx-ex-title">Composez votre propre agent IA</div>
         </div>
-        <div class="gx-ex-score" id="gx-ex6-score">0 / 4</div>
+        <div class="gx-ex-score" id="gx-ex6-score">0 / 5</div>
       </div>
       <div class="gx-ex-body">
         <div style="background:rgba(0,178,178,.1);border:1.5px solid rgba(0,178,178,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
           <div style="font-size:9px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">📋 Brief client</div>
           <p style="font-size:13px;color:#cfd1ec;line-height:1.6;">Un retailer veut un agent qui <strong style="color:#fff;">surveille quotidiennement les avis clients négatifs sur son site</strong>, les analyse par catégorie de produit, et <strong style="color:#fff;">alerte l'équipe produit</strong> si un seuil critique est dépassé.</p>
         </div>
-        <p class="gx-instr">Choisissez les 4 briques adaptées à ce scénario précis. Une mauvaise combinaison sera signalée.</p>
+        <p class="gx-instr">Choisissez les 5 briques adaptées à ce scénario précis. Une mauvaise combinaison sera signalée.</p>
         <div class="gx-builder" id="gx-ex6-builder"></div>
         <div class="gx-actions">
           <button class="gx-btn" id="gx-ex6-build" disabled onclick="GX.ex6.build()">Générer le workflow ▸</button>
@@ -795,6 +1282,186 @@
         </div>
       </div>
     </div>
+
+    <!-- SECTION: ARCHITECTURE TECHNIQUE RAG -->
+    <div class="reveal rv2" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">🔬 RAG sous le capot — Architecture technique détaillée</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div>
+          <div style="background:var(--gray-lt);border:1.5px solid var(--gray-bdr);border-radius:12px;padding:16px;">
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;text-align:center;">📚 Préparation (offline)</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--navy-dk);color:var(--teal);font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Ingestion</strong> : PDFs, docs → texte brut</div>
+              </div>
+              <div style="text-align:center;color:var(--teal);font-size:16px;">↓</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--navy-dk);color:var(--teal);font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Chunking</strong> : Découpe en morceaux de 500-1000 tokens</div>
+              </div>
+              <div style="text-align:center;color:var(--teal);font-size:16px;">↓</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--navy-dk);color:var(--teal);font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Embedding</strong> : Vectorisation via modèle</div>
+              </div>
+              <div style="text-align:center;color:var(--teal);font-size:16px;">↓</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--navy-dk);color:var(--teal);font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Indexation</strong> : Stockage en vector DB</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="background:linear-gradient(135deg,var(--teal-lt),rgba(0,178,178,.08));border:2px solid var(--teal);border-radius:12px;padding:16px;box-shadow:0 4px 16px rgba(0,178,178,.15);">
+            <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;text-align:center;">⚡ Requêtage (runtime)</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Question utilisateur</strong></div>
+              </div>
+              <div style="text-align:center;color:var(--teal);font-size:16px;">↓</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">6</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Embedding</strong> de la question</div>
+              </div>
+              <div style="text-align:center;color:var(--teal);font-size:16px;">↓</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">7</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Recherche</strong> sémantique (top-k chunks)</div>
+              </div>
+              <div style="text-align:center;color:var(--teal);font-size:16px;">↓</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">8</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Injection</strong> dans le prompt LLM</div>
+              </div>
+              <div style="text-align:center;color:var(--teal);font-size:16px;">↓</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">9</div>
+                <div style="font-size:11px;color:var(--gray-dk);"><strong>Génération</strong> réponse + sources</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: BASES VECTORIELLES -->
+    <div class="reveal rv3" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">🗄️ Bases vectorielles — Choisir la bonne solution</h3>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:12px;padding:16px;transition:all .2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='';this.style.transform='';">
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;">Pinecone</div>
+          <div style="font-size:10px;color:var(--gray);margin-bottom:10px;font-style:italic;">Cloud managé</div>
+          <div style="font-size:11px;color:#065F46;margin-bottom:6px;">✓ Zéro infra<br>✓ Scalabilité automatique<br>✓ Performance garantie</div>
+          <div style="font-size:11px;color:#991B1B;margin-bottom:10px;">⚠️ Coût élevé à large échelle<br>⚠️ Vendor lock-in</div>
+          <div style="padding:8px 10px;background:var(--teal-lt);border-radius:6px;font-size:10px;color:var(--teal-dk);">📌 Idéal : POC, startups, déploiement rapide</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:12px;padding:16px;transition:all .2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='';this.style.transform='';">
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;">Weaviate</div>
+          <div style="font-size:10px;color:var(--gray);margin-bottom:10px;font-style:italic;">Open source + Cloud option</div>
+          <div style="font-size:11px;color:#065F46;margin-bottom:6px;">✓ Filtres avancés (métadonnées)<br>✓ Hybrid search (vecteurs + BM25)<br>✓ Self-hosted possible</div>
+          <div style="font-size:11px;color:#991B1B;margin-bottom:10px;">⚠️ Setup initial plus complexe</div>
+          <div style="padding:8px 10px;background:var(--teal-lt);border-radius:6px;font-size:10px;color:var(--teal-dk);">📌 Idéal : projets avec métadonnées riches</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:12px;padding:16px;transition:all .2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='';this.style.transform='';">
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;">ChromaDB</div>
+          <div style="font-size:10px;color:var(--gray);margin-bottom:10px;font-style:italic;">Open source, lightweight</div>
+          <div style="font-size:11px;color:#065F46;margin-bottom:6px;">✓ Simple d'installation<br>✓ Gratuit<br>✓ Parfait pour le dev local</div>
+          <div style="font-size:11px;color:#991B1B;margin-bottom:10px;">⚠️ Moins scalable pour production massive</div>
+          <div style="padding:8px 10px;background:var(--teal-lt);border-radius:6px;font-size:10px;color:var(--teal-dk);">📌 Idéal : prototypes, petits datasets</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:12px;padding:16px;transition:all .2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='';this.style.transform='';">
+          <div style="font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;">pgvector</div>
+          <div style="font-size:10px;color:var(--gray);margin-bottom:10px;font-style:italic;">Extension PostgreSQL</div>
+          <div style="font-size:11px;color:#065F46;margin-bottom:6px;">✓ Pas de nouvelle BDD à gérer<br>✓ Données + vecteurs au même endroit<br>✓ Transactions ACID</div>
+          <div style="font-size:11px;color:#991B1B;margin-bottom:10px;">⚠️ Performance inférieure à très grande échelle</div>
+          <div style="padding:8px 10px;background:var(--teal-lt);border-radius:6px;font-size:10px;color:var(--teal-dk);">📌 Idéal : stack PostgreSQL existante</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: RAG AVANCE -->
+    <div class="reveal rv4" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">🚀 RAG avancé — Techniques pour aller plus loin</h3>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:14px;">
+          <div style="font-size:16px;margin-bottom:6px;">🎯</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Hybrid Search</div>
+          <div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:6px;">Combiner recherche sémantique (vecteurs) + recherche par mots-clés (BM25)</div>
+          <div style="font-size:10px;color:var(--teal-dk);font-style:italic;">→ Termes techniques précis (SKU, codes) + recherche sémantique</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:14px;">
+          <div style="font-size:16px;margin-bottom:6px;">🔄</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Re-ranking</div>
+          <div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:6px;">Après retrieval, re-classer les top-20 chunks pour ne garder que les 5 meilleurs</div>
+          <div style="font-size:10px;color:var(--teal-dk);font-style:italic;">→ Améliorer la précision quand beaucoup de documents similaires</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:14px;">
+          <div style="font-size:16px;margin-bottom:6px;">🧩</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Parent-Child Chunks</div>
+          <div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:6px;">Indexer des petits chunks mais retourner le paragraphe/section parent pour plus de contexte</div>
+          <div style="font-size:10px;color:var(--teal-dk);font-style:italic;">→ Éviter de perdre le contexte en découpant trop finement</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:14px;">
+          <div style="font-size:16px;margin-bottom:6px;">🔍</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Query Expansion</div>
+          <div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:6px;">Reformuler la question utilisateur en plusieurs variantes avant retrieval</div>
+          <div style="font-size:10px;color:var(--teal-dk);font-style:italic;">→ Questions vagues ou avec plusieurs interprétations possibles</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:14px;">
+          <div style="font-size:16px;margin-bottom:6px;">🏷️</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Metadata Filtering</div>
+          <div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:6px;">Filtrer par date, auteur, catégorie avant la recherche vectorielle</div>
+          <div style="font-size:10px;color:var(--teal-dk);font-style:italic;">→ Corpus multi-tenant, multi-période, multi-catégorie</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:10px;padding:14px;">
+          <div style="font-size:16px;margin-bottom:6px;">📊</div>
+          <div style="font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;">Contexte adaptatif</div>
+          <div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:6px;">Ajuster dynamiquement le nombre de chunks selon la complexité de la question</div>
+          <div style="font-size:10px;color:var(--teal-dk);font-style:italic;">→ Question simple : 3 chunks, question complexe : 10 chunks</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: RAG VS FINE-TUNING -->
+    <div class="reveal rv5" style="margin-top:40px;">
+      <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px;">⚖️ RAG vs Fine-tuning — Quand choisir quoi ?</h3>
+      <div style="background:#fff;border:1.5px solid var(--gray-bdr);border-radius:12px;overflow:hidden;">
+        <div style="display:grid;grid-template-columns:180px 1fr 1fr;">
+          <div style="background:var(--navy-dk);color:#fff;padding:12px 16px;font-family:var(--font-head);font-size:12px;font-weight:700;border-right:1px solid var(--gray-bdr);">Critère</div>
+          <div style="background:linear-gradient(135deg,var(--teal-lt),rgba(0,178,178,.06));padding:12px 16px;font-family:var(--font-head);font-size:12px;font-weight:700;color:var(--teal-dk);text-align:center;border-right:1px solid var(--gray-bdr);">RAG ✓</div>
+          <div style="background:var(--gray-lt);padding:12px 16px;font-family:var(--font-head);font-size:12px;font-weight:700;color:var(--gray-dk);text-align:center;">Fine-tuning</div>
+        </div>
+        <div style="display:grid;grid-template-columns:180px 1fr 1fr;border-top:1px solid var(--gray-bdr);">
+          <div style="padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);border-right:1px solid var(--gray-bdr);">Coût</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);border-right:1px solid var(--gray-bdr);">💰 Faible (vectorisation + API)</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);">💰💰💰 Élevé (GPUs, entraînement)</div>
+        </div>
+        <div style="display:grid;grid-template-columns:180px 1fr 1fr;border-top:1px solid var(--gray-bdr);background:var(--gray-lt);">
+          <div style="padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);border-right:1px solid var(--gray-bdr);">Temps de setup</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);border-right:1px solid var(--gray-bdr);">⏱️ Jours</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);">⏱️⏱️ Semaines/mois</div>
+        </div>
+        <div style="display:grid;grid-template-columns:180px 1fr 1fr;border-top:1px solid var(--gray-bdr);">
+          <div style="padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);border-right:1px solid var(--gray-bdr);">MAJ des données</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);border-right:1px solid var(--gray-bdr);">✅ Temps réel (ajout documents)</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);">❌ Nécessite ré-entraînement</div>
+        </div>
+        <div style="display:grid;grid-template-columns:180px 1fr 1fr;border-top:1px solid var(--gray-bdr);background:var(--gray-lt);">
+          <div style="padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);border-right:1px solid var(--gray-bdr);">Transparence</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);border-right:1px solid var(--gray-bdr);">✅ Sources citées</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);">⚠️ "Boîte noire"</div>
+        </div>
+        <div style="display:grid;grid-template-columns:180px 1fr 1fr;border-top:1px solid var(--gray-bdr);">
+          <div style="padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);border-right:1px solid var(--gray-bdr);">Use case</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);border-right:1px solid var(--gray-bdr);">📚 Accès à vos docs internes, Q&A</div>
+          <div style="padding:10px 16px;font-size:11px;color:var(--gray-dk);">🎯 Adapter le style, le ton du modèle</div>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:14px 18px;background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;font-size:12px;color:var(--gray-dk);">💡 <strong style="color:var(--navy);">Approche hybride :</strong> Fine-tuner un modèle sur votre domaine (ex: retail) + utiliser RAG pour injecter des données spécifiques en temps réel = meilleur des deux mondes.</div>
+    </div>
     <!-- ============ EXERCISE · MODULE 07 · RAG sequencing + MCP ============ -->
     <div class="gx-ex reveal" id="gx-ex7" data-gx-module="rag">
       <div class="gx-ex-head">
@@ -803,7 +1470,7 @@
           <div class="gx-ex-eyebrow">Double exercice · 3 min</div>
           <div class="gx-ex-title">Reconstituez le flux RAG &amp; branchez les bons outils MCP</div>
         </div>
-        <div class="gx-ex-score" id="gx-ex7-score">0 / 2</div>
+        <div class="gx-ex-score" id="gx-ex7-score">0 / 3</div>
       </div>
       <div class="gx-ex-body">
         <p class="gx-instr"><b>Partie A — RAG.</b> Glissez-déposez les étapes pour reconstituer le pipeline, de la question à la réponse.</p>
@@ -827,6 +1494,15 @@
         </div>
         <div class="arch-panel" id="arch-mcp" hidden></div>
         <div class="gx-fb" id="gx-ex7-fb-mcp"></div>
+
+        <div style="height:1px;background:var(--gray-bdr);margin:24px 0;"></div>
+
+        <p class="gx-instr"><b>Partie C — RAG vs Fine-tuning.</b> Pour chaque cas client, choisissez la bonne approche.</p>
+        <div id="gx-ex7-rvft"></div>
+        <div class="gx-actions">
+          <button class="gx-btn" id="gx-ex7-rvft-check" disabled onclick="GX.ex7.checkRvft()">Valider</button>
+        </div>
+        <div class="gx-fb" id="gx-ex7-fb-rvft"></div>
         <div class="gx-earned" id="gx-ex7-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Orchestrateur RAG &amp; MCP</b><br>+50 XP · Module 07 validé</span></div>
       </div>
     </div>
