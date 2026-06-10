@@ -394,7 +394,7 @@
       <div class="gx-ex-body">
         <div style="background:rgba(0,178,178,.1);border:1.5px solid rgba(0,178,178,.35);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
           <div style="font-size:9px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">🎯 Mission à résoudre</div>
-          <p style="font-size:13px;color:var(--text);line-height:1.6;margin-bottom:8px;">Un client vous demande : <strong>"Quel est le segment du client n°123 ?"</strong> Trouvez la réponse via l'API, puis créez un nouvel événement.</p>
+          <p style="font-size:13px;color:var(--text);line-height:1.6;margin-bottom:8px;">Un client vous demande : <strong>"Quel est le segment du client n°123 ?"</strong> Deux gestes à réaliser : d'abord <strong>lire</strong> cette donnée (GET), puis <strong>créer</strong> un nouvel événement (POST).</p>
           <div id="gx-ex3-objectives" style="display:flex;gap:10px;flex-wrap:wrap;">
             <span id="obj-1" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.08);color:#8B8ECA;border:1px solid rgba(255,255,255,.12);">⬜ Lire le segment du client 123</span>
             <span id="obj-2" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.08);color:#8B8ECA;border:1px solid rgba(255,255,255,.12);">⬜ Créer un événement via POST</span>
@@ -413,6 +413,11 @@
         <div class="gx-field" style="margin-bottom:14px;">
           <label>2 · Ressource</label>
           <div class="gx-chips3" id="gx-ex3-resources"></div>
+        </div>
+         <!-- Encart POST · révélé dynamiquement quand la méthode POST est active -->
+        <div id="gx-ex3-post-note" style="display:none;background:rgba(124,58,237,.08);border:1.5px solid rgba(124,58,237,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
+          <div style="font-size:9px;font-weight:700;color:var(--violet);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">📮 Comprendre le POST</div>
+          <p style="font-size:13px;color:var(--text);line-height:1.6;margin:0;">Là où le <strong>GET lit</strong> une ressource sans la modifier, le <strong>POST crée</strong> quelque chose côté serveur. La donnée à enregistrer voyage dans le <strong>corps de la requête</strong> (le <em>body</em>) — pas dans l'URL. Le serveur répond alors <strong>201 Created</strong> au lieu de 200.</p>
         </div>
         <!-- 3 · Paramètre (GET) ou corps (POST) -->
         <div class="gx-field" style="margin-bottom:14px;">

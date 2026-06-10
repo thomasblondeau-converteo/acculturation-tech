@@ -379,11 +379,14 @@ const GX = (function(){
     }
 
     /* ---- Sélecteurs (appelés depuis le HTML) ----------------------- */
-    function setMethod(m){
+       function setMethod(m){
       method=m;
       // On réinitialise les choix dépendants de la méthode
       resource=null; getParam=null; postBody=null;
       document.querySelectorAll('#gx-ex3-method button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+      // Révèle l'explication POST uniquement quand la méthode POST est active
+      const postNote=document.getElementById('gx-ex3-post-note');
+      if(postNote) postNote.style.display = (m==='POST') ? 'block' : 'none';
       renderBuilder();
     }
     function pickResource(id){ resource=id; renderBuilder(); }
