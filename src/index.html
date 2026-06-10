@@ -751,7 +751,7 @@
       <h2 class="section-title">RAG & MCP : <span>l'IA qui sait</span> ce qu'elle ne sait pas</h2>
       <p class="section-sub">Comment connecter un LLM à vos propres données — et comment les agents communiquent avec les outils du monde réel.</p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;" class="reveal rv1">
+    <div id="ragmcp-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;" class="reveal rv1">
       <div>
         <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;">RAG <span style="font-family:var(--font-mono);font-size:12px;color:var(--gray);font-weight:400;">Retrieval-Augmented Generation</span></h3>
         <p style="font-size:13px;color:var(--gray);margin-bottom:16px;line-height:1.65;">Un LLM connaît le monde jusqu'à sa date d'entraînement. Avec le RAG, on lui donne accès à <strong>vos documents en temps réel</strong>.</p>
@@ -783,6 +783,10 @@
             <div class="mcp-tool"><div class="mico">🔧</div><div class="mname">APIs</div></div>
           </div>
           <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--teal-dk);font-style:italic;">↑ Tous connectés via le protocole MCP</div>
+          <div style="text-align:center;margin-top:14px;">
+            <button class="gx-btn gx-btn-arch" type="button" id="arch-btn-agent">🗺 Voir l'architecture</button>
+          </div>
+          <div class="arch-panel" id="arch-agent" hidden></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;margin-top:14px;">
           <div style="display:flex;gap:8px;font-size:12px;color:var(--gray-dk);"><span style="color:var(--teal);">●</span>Un agent, des dizaines d'outils connectables</div>
@@ -807,7 +811,9 @@
         <div class="gx-seq" id="gx-ex7-seq"></div>
         <div class="gx-actions">
           <button class="gx-btn" onclick="GX.ex7.checkSeq()">Vérifier l'ordre</button>
+          <button class="gx-btn gx-btn-arch" type="button" id="arch-btn-rag">🗺 Voir l'architecture</button>
         </div>
+        <div class="arch-panel" id="arch-rag" hidden></div>
         <div class="gx-fb" id="gx-ex7-fb-seq"></div>
 
         <div style="height:1px;background:var(--gray-bdr);margin:24px 0;"></div>
@@ -817,7 +823,9 @@
         <div class="gx-actions">
           <button class="gx-btn" onclick="GX.ex7.checkMcp()">Valider les connexions</button>
           <button class="gx-btn gx-btn-ghost" onclick="GX.ex7.reset()">Recommencer</button>
+          <button class="gx-btn gx-btn-arch" type="button" id="arch-btn-mcp">🗺 Voir l'architecture</button>
         </div>
+        <div class="arch-panel" id="arch-mcp" hidden></div>
         <div class="gx-fb" id="gx-ex7-fb-mcp"></div>
         <div class="gx-earned" id="gx-ex7-earned"><span class="ico">🏅</span><span class="txt"><b>Badge débloqué — Orchestrateur RAG &amp; MCP</b><br>+50 XP · Module 07 validé</span></div>
       </div>
