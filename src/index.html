@@ -400,25 +400,31 @@
             <span id="obj-2" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.08);color:#8B8ECA;border:1px solid rgba(255,255,255,.12);">⬜ Créer un événement via POST</span>
           </div>
         </div>
-        <p class="gx-instr">Choisissez une méthode, un endpoint et observez la réponse simulée du serveur (statut HTTP + JSON).</p>
-        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;">
-          <div class="gx-field">
-            <label>Méthode</label>
-            <div class="gx-seg" id="gx-ex3-method">
-              <button class="on" data-m="GET" onclick="GX.ex3.setMethod('GET')">GET</button>
-              <button data-m="POST" onclick="GX.ex3.setMethod('POST')">POST</button>
-            </div>
+        <p class="gx-instr">Composez vous-même la requête : choisissez la <strong>méthode</strong>, la <strong>ressource</strong>, puis affinez avec un <strong>paramètre</strong> (GET) ou un <strong>corps</strong> (POST). L'aperçu se met à jour en direct — l'API exécutera exactement ce que vous écrivez.</p>
+        <!-- 1 · Méthode -->
+        <div class="gx-field" style="margin-bottom:14px;">
+          <label>1 · Méthode</label>
+          <div class="gx-seg" id="gx-ex3-method">
+            <button class="on" data-m="GET" onclick="GX.ex3.setMethod('GET')">GET</button>
+            <button data-m="POST" onclick="GX.ex3.setMethod('POST')">POST</button>
           </div>
-          <div class="gx-field" style="flex:1;min-width:200px;">
-            <label>Endpoint</label>
-            <select class="gx-select" id="gx-ex3-endpoint" onchange="GX.ex3.render()"></select>
-          </div>
-          <button class="gx-btn" onclick="GX.ex3.send()">Envoyer ▸</button>
         </div>
-        <div class="gx-field" id="gx-ex3-payload-wrap" style="margin-bottom:16px;display:none;">
-          <label>Payload envoyé (POST)</label>
-          <div class="gx-term" id="gx-ex3-payload" style="min-height:auto;"></div>
+        <!-- 2 · Ressource (chips cliquables) -->
+        <div class="gx-field" style="margin-bottom:14px;">
+          <label>2 · Ressource</label>
+          <div class="gx-chips3" id="gx-ex3-resources"></div>
         </div>
+        <!-- 3 · Paramètre (GET) ou corps (POST) -->
+        <div class="gx-field" style="margin-bottom:14px;">
+          <label>3 · Affiner</label>
+          <div class="gx-chips3" id="gx-ex3-params"></div>
+        </div>
+        <!-- Aperçu live de la requête composée -->
+        <div class="gx-field" style="margin-bottom:16px;">
+          <label>Requête composée</label>
+          <div class="gx-term" id="gx-ex3-reqline" style="min-height:auto;"></div>
+        </div>
+        <button class="gx-btn" id="gx-ex3-send" onclick="GX.ex3.send()" disabled>Envoyer la requête ▸</button>
         <div class="gx-field">
           <label>Réponse du serveur</label>
           <div class="gx-term" id="gx-ex3-resp">// Configurez une requête puis cliquez sur « Envoyer ».</div>

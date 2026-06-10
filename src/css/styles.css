@@ -401,6 +401,12 @@ h1,h2,h3,h4,h5,h6{font-family:var(--font-head);line-height:1.2;}
 .gx-field label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);}
 .gx-select{font-family:var(--font-mono);font-size:12px;padding:9px 12px;border:1.5px solid var(--gray-bdr);border-radius:8px;background:#fff;color:var(--gray-dk);cursor:pointer;}
 .gx-select:focus{outline:none;border-color:var(--teal);}
+/* --- EX3 · request builder chips (ressources & paramètres) --- */
+.gx-chips3{display:flex;flex-wrap:wrap;gap:8px;}
+.gx-chip3{font-family:var(--font-mono);font-size:12px;font-weight:600;padding:8px 14px;border:1.5px solid var(--gray-bdr);border-radius:8px;background:#fff;color:var(--gray-dk);cursor:pointer;transition:all .16s;}
+.gx-chip3:hover{border-color:var(--teal);color:var(--teal-dk);background:var(--teal-lt);}
+.gx-chip3.on{background:var(--navy-dk);border-color:var(--navy-dk);color:var(--teal);}
+.gx-ex3-paramlabel{flex-basis:100%;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);margin-bottom:2px;}
 
 /* --- ETL ordered cleaning ----------------------------------------- */
 .gx-table{width:100%;border-collapse:collapse;font-size:11.5px;font-family:var(--font-mono);}

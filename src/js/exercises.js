@@ -261,83 +261,235 @@ const GX = (function(){
   });
 
   /* ===================================================================
-     EX3 — API simulator
+     EX3 — API request builder  (refonte : on CONSTRUIT la requête)
+     -------------------------------------------------------------------
+     👉 CONSULTANTS : pour éditer cet exercice, modifiez l'objet CFG3
+        ci-dessous (mission, ressources, réponses du serveur).
+     Principe pédagogique : l'utilisateur n'a plus de menu tout fait.
+     Il choisit une méthode (GET/POST), assemble une ressource + un
+     paramètre, et découvre que l'API exécute EXACTEMENT ce qu'il écrit
+     — d'où l'intérêt d'une requête précise.
      =================================================================== */
   const ex3 = (function(){
-    let method='GET', calls=0;
-    const EP = {
-      GET:[
-        {path:'/api/v1/clients?id=123', status:'200', code:'s200', body:{id:123,name:'Fnac Darty',segment:'Premium',revenue:4200000}},
-        {path:'/api/v1/orders?date=today', status:'200', code:'s200', body:{count:842,total_eur:128400,currency:'EUR'}},
-        {path:'/api/v1/products/999999', status:'400', code:'s400', body:{error:'not_found',message:'Produit inexistant'}}
+    /* ---- Config éditable ------------------------------------------- */
+    const BASE = '/api/v1';
+    const CFG3 = {
+      // Ressources disponibles selon la méthode
+      resources: {
+        GET:  [
+          {id:'clients', label:'/clients'},
+          {id:'orders',  label:'/orders'}
+        ],
+        POST: [
+          {id:'events',  label:'/events'},
+          {id:'clients', label:'/clients'}
+        ]
+      },
+      // Paramètres / corps proposés (chips)
+      getParams: [
+        {id:'id123',  label:'?id=123',     q:{id:'123'}},
+        {id:'today',  label:'?date=today', q:{date:'today'}}
       ],
-      POST:[
-        {path:'/api/v1/clients', status:'201', code:'s201', payload:{name:'Nouveau Client',segment:'Standard'}, body:{id:5567,created:true}},
-        {path:'/api/v1/events', status:'201', code:'s201', payload:{type:'banner_click',user:123}, body:{event_id:'evt_91a2',stored:true}},
-        {path:'/api/v1/orders', status:'400', code:'s400', payload:{items:[]}, body:{error:'validation',message:'Panier vide'}}
+      postBodies: [
+        {id:'evt',    label:'banner_click', body:{type:'banner_click', user:123}},
+        {id:'cli',    label:'nouveau client', body:{name:'Nouveau Client', segment:'Standard'}}
       ]
     };
-    function setMethod(m){
-      method=m;
-      document.querySelectorAll('#gx-ex3-method button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
-      render();
-    }
-    function render(){
-      const sel=document.getElementById('gx-ex3-endpoint');
-      sel.innerHTML = EP[method].map((e,i)=>`<option value="${i}">${e.path}</option>`).join('');
-      const e=EP[method][0];
-      togglePayload();
-    }
-    function togglePayload(){
-      const i=+document.getElementById('gx-ex3-endpoint').value||0;
-      const e=EP[method][i];
-      const wrap=document.getElementById('gx-ex3-payload-wrap');
-      if(method==='POST'){ wrap.style.display='flex'; document.getElementById('gx-ex3-payload').textContent=JSON.stringify(e.payload,null,2); }
-      else wrap.style.display='none';
-    }
-    let obj1Done=false, obj2Done=false;
+
+    /* ---- État de la requête en cours de construction --------------- */
+    let method='GET';
+    let resource=null;          // id de ressource sélectionnée
+    let getParam=null;          // id de param GET sélectionné (ou null)
+    let postBody=null;          // id de body POST sélectionné (ou null)
+    let calls=0;
+    let obj1Done=false, obj2Done=false;   // obj1 = lire LE client 123 ; obj2 = créer un événement
+
+    /* ---- Helpers DOM ----------------------------------------------- */
+    function $(id){ return document.getElementById(id); }
+
     function markObj(id, done){
-      const el2=document.getElementById(id);
+      const el2=$(id);
       if(!el2) return;
-      el2.textContent=(done?'✅ ':'⬜ ')+el2.textContent.replace(/^[✅⬜] /,'');
+      el2.textContent=(done?'✅ ':'⬜ ')+el2.textContent.replace(/^[✅⬜]\s/,'');
       el2.style.background=done?'rgba(16,185,129,.15)':'rgba(255,255,255,.08)';
       el2.style.color=done?'var(--green)':'#8B8ECA';
       el2.style.borderColor=done?'rgba(16,185,129,.4)':'rgba(255,255,255,.12)';
     }
+
+    /* ---- Rendu des chips (ressources + paramètres) ----------------- */
+    function chipHTML(active, label, onclick){
+      return '<button type="button" class="gx-chip3'+(active?' on':'')+'" onclick="'+onclick+'">'+label+'</button>';
+    }
+
+    function renderBuilder(){
+      // Ressources
+      const resWrap=$('gx-ex3-resources');
+      resWrap.innerHTML = CFG3.resources[method]
+        .map(r=>chipHTML(resource===r.id, BASE+r.label, "GX.ex3.pickResource('"+r.id+"')"))
+        .join('');
+
+      // Zone paramètre / body selon la méthode
+      const paramWrap=$('gx-ex3-params');
+      if(method==='GET'){
+        paramWrap.innerHTML =
+          '<div class="gx-ex3-paramlabel">Paramètre (optionnel)</div>'+
+          CFG3.getParams
+            .map(p=>chipHTML(getParam===p.id, p.label, "GX.ex3.pickParam('"+p.id+"')"))
+            .join('');
+      } else {
+        paramWrap.innerHTML =
+          '<div class="gx-ex3-paramlabel">Corps à envoyer (body)</div>'+
+          CFG3.postBodies
+            .map(b=>chipHTML(postBody===b.id, b.label, "GX.ex3.pickBody('"+b.id+"')"))
+            .join('');
+      }
+      renderRequestLine();
+    }
+
+    /* ---- Aperçu live de la requête composée ------------------------ */
+    function buildPath(){
+      if(!resource) return null;
+      let path = BASE + '/' + resource;
+      if(method==='GET' && getParam){
+        const p = CFG3.getParams.find(x=>x.id===getParam);
+        const k = Object.keys(p.q)[0];
+        path += '?'+k+'='+p.q[k];
+      }
+      return path;
+    }
+    function renderRequestLine(){
+      const line=$('gx-ex3-reqline');
+      const path=buildPath();
+      const methodCol = method==='GET' ? '#7DD3FC' : '#FCD34D';
+      if(!path){
+        line.innerHTML='<span style="color:#6B6EA8;">// Choisissez une ressource pour composer la requête…</span>';
+      } else {
+        let html='<span style="color:'+methodCol+';font-weight:700;">'+method+'</span> '+
+                 '<span style="color:#E8EAF6;">'+path+'</span>';
+        if(method==='POST'){
+          const b=CFG3.postBodies.find(x=>x.id===postBody);
+          html += '\n<span style="color:#8B8ECA;">Body:</span> '+
+                  (b ? syntax(JSON.stringify(b.body)) : '<span style="color:#6B6EA8;">(aucun corps sélectionné)</span>');
+        }
+        line.innerHTML=html;
+      }
+      // Le bouton n'est actif que si une ressource est choisie
+      const btn=$('gx-ex3-send');
+      if(btn) btn.disabled = !resource;
+    }
+
+    /* ---- Sélecteurs (appelés depuis le HTML) ----------------------- */
+    function setMethod(m){
+      method=m;
+      // On réinitialise les choix dépendants de la méthode
+      resource=null; getParam=null; postBody=null;
+      document.querySelectorAll('#gx-ex3-method button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+      renderBuilder();
+    }
+    function pickResource(id){ resource=id; renderBuilder(); }
+    function pickParam(id){ getParam = (getParam===id?null:id); renderBuilder(); }
+    function pickBody(id){ postBody = (postBody===id?null:id); renderBuilder(); }
+
+    /* ---- Résolution serveur : la requête composée → réponse -------- */
+    function resolve(){
+      // Renvoie {status, code, body, verdict, msg}
+      // verdict: 'success' (objectif atteint) | 'partial' (200 mais pas ce qu'il fallait) | 'error'
+      if(method==='GET'){
+        if(resource==='clients' && getParam==='id123'){
+          return {status:'200 OK', code:'s200',
+            body:{id:123,name:'Fnac Darty',segment:'Premium',revenue:4200000},
+            verdict:'success', target:'obj1',
+            msg:'<p><b>GET</b> a <b>lu</b> une ressource précise sans la modifier (statut <b>200</b>). Le paramètre <code>?id=123</code> a ciblé LE bon client — c\'est ça, un appel d\'API précis.</p>'};
+        }
+        if(resource==='clients' && !getParam){
+          return {status:'200 OK', code:'s200',
+            body:{count:5120,note:'liste complète paginée…'},
+            verdict:'partial',
+            msg:'<p>Statut <b>200</b>, mais sans paramètre l\'API a renvoyé <b>toute la liste</b> des clients — pas LE client 123. 💡 Ajoutez <code>?id=123</code> pour cibler une seule ressource.</p>'};
+        }
+        if(resource==='orders'){
+          return {status:'200 OK', code:'s200',
+            body:{count:842,total_eur:128400,currency:'EUR'},
+            verdict:'partial',
+            msg:'<p>Statut <b>200</b> : vous avez bien lu une ressource… mais <b>/orders</b> renvoie des commandes, pas le segment d\'un client. Bonne méthode, mauvaise ressource.</p>'};
+        }
+        // GET clients?date=today → paramètre incohérent
+        return {status:'404 Not Found', code:'s400',
+          body:{error:'bad_request',message:'Paramètre non reconnu pour cette ressource'},
+          verdict:'error',
+          msg:'<p>Statut <b>404</b> : la combinaison ressource + paramètre n\'a pas de sens pour le serveur. Une API n\'accepte que ce que son contrat prévoit.</p>'};
+      } else { // POST
+        if(resource==='events' && postBody==='evt'){
+          return {status:'201 Created', code:'s201',
+            body:{event_id:'evt_91a2',stored:true},
+            verdict:'success', target:'obj2',
+            msg:'<p><b>POST</b> a <b>créé</b> une ressource côté serveur — statut <b>201 Created</b>. Les données du body ont été enregistrées.</p>'};
+        }
+        if(resource==='events' && !postBody){
+          return {status:'422 Unprocessable', code:'s400',
+            body:{error:'validation',message:'Corps de requête vide'},
+            verdict:'error',
+            msg:'<p>Statut <b>422</b> : un POST sans corps n\'a rien à enregistrer. 💡 Sélectionnez un body à envoyer.</p>'};
+        }
+        if(resource==='clients' && postBody==='cli'){
+          return {status:'201 Created', code:'s201',
+            body:{id:5567,created:true},
+            verdict:'partial',
+            msg:'<p>Statut <b>201</b> : vous avez bien <b>créé</b> une ressource (un client) — mais la mission demandait de créer un <b>événement</b>. Bonne méthode, mauvaise ressource.</p>'};
+        }
+        // body incohérent avec la ressource
+        return {status:'422 Unprocessable', code:'s400',
+          body:{error:'validation',message:'Le corps ne correspond pas à la ressource'},
+          verdict:'error',
+          msg:'<p>Statut <b>422</b> : le corps envoyé ne correspond pas à ce que cette ressource attend. Le contrat d\'API impose un format précis.</p>'};
+      }
+    }
+
+    /* ---- Envoi ------------------------------------------------------ */
     function send(){
-      const i=+document.getElementById('gx-ex3-endpoint').value||0;
-      const e=EP[method][i];
-      togglePayload();
-      const respEl=document.getElementById('gx-ex3-resp');
-      respEl.innerHTML='<span style="color:#AEB4DC;">▸ '+method+' '+e.path+'</span>\n<span style="color:#AEB4DC;">⏳ requête en cours…</span>';
+      if(!resource) return;
+      const path=buildPath();
+      const r=resolve();
+      const respEl=$('gx-ex3-resp');
+      respEl.innerHTML='<span style="color:#AEB4DC;">▸ '+method+' '+path+'</span>\n<span style="color:#AEB4DC;">⏳ requête en cours…</span>';
       setTimeout(()=>{
         respEl.innerHTML =
-          '<span style="color:#AEB4DC;">▸ '+method+' '+e.path+'</span>\n'+
-          'HTTP <span class="gx-status '+e.code+'">'+e.status+'</span>\n\n'+
-          syntax(JSON.stringify(e.body,null,2));
+          '<span style="color:#AEB4DC;">▸ '+method+' '+path+'</span>\n'+
+          'HTTP <span class="gx-status '+r.code+'">'+r.status+'</span>\n\n'+
+          syntax(JSON.stringify(r.body,null,2));
         calls++;
-        document.getElementById('gx-ex3-score').textContent=calls+' appel'+(calls>1?'s':'');
-        const isGet=method==='GET', okStatus=e.status[0]!=='4';
-        // Track objectives
-        if(method==='GET' && e.path.includes('clients?id=123') && okStatus){ obj1Done=true; markObj('obj-1',true); }
-        if(method==='POST' && e.path.includes('/api/v1/events') && okStatus){ obj2Done=true; markObj('obj-2',true); }
-        const msgSuffix = !obj1Done ? '<br><em style="font-size:11px;color:#8B8ECA;">💡 Avez-vous cherché le segment du client 123 ?</em>'
-          : !obj2Done ? '<br><em style="font-size:11px;color:#8B8ECA;">💡 Maintenant créez un événement via POST.</em>' : '';
-        fb('gx-ex3-fb', okStatus?'good':'bad',
-          okStatus
-            ? '<p><b>'+method+'</b> '+(isGet?'a <b>lu</b> une ressource sans la modifier (statut 2xx).':'a <b>créé</b> une ressource côté serveur — statut <b>201 Created</b>.')+'</p>'+msgSuffix
-            : '<p>Statut <b>400</b> : la requête est mal formée ou la ressource n\'existe pas. Une API renvoie toujours un code HTTP qui dit si l\'appel a réussi.</p>');
+        $('gx-ex3-score').textContent=calls+' appel'+(calls>1?'s':'');
+
+        if(r.verdict==='success' && r.target==='obj1' && !obj1Done){ obj1Done=true; markObj('obj-1',true); }
+        if(r.verdict==='success' && r.target==='obj2' && !obj2Done){ obj2Done=true; markObj('obj-2',true); }
+
+        let suffix='';
+        if(!(obj1Done&&obj2Done)){
+          suffix = !obj1Done
+            ? '<br><em style="font-size:11px;color:#8B8ECA;">🎯 Objectif : lisez le segment du client 123 (GET /clients avec le bon paramètre).</em>'
+            : '<br><em style="font-size:11px;color:#8B8ECA;">🎯 Objectif : créez un événement (passez en POST sur /events).</em>';
+        }
+        const kind = r.verdict==='success' ? 'good' : (r.verdict==='partial' ? '' : 'bad');
+        fb('gx-ex3-fb', kind, '<p>'+r.msg.replace(/^<p>|<\/p>$/g,'')+'</p>'+suffix);
+
         if(obj1Done && obj2Done) complete('api','🏅 Connecteur d\'APIs');
       }, 420);
     }
+
+    /* ---- Coloration syntaxique JSON (inchangée) -------------------- */
     function syntax(s){
       return s.replace(/("(\\.|[^"])*")(\s*:)?/g,(m,p1,_,colon)=>
         colon ? '<span style="color:#7DD3FC;">'+p1+'</span>'+colon : '<span style="color:#A7F3D0;">'+p1+'</span>')
         .replace(/\b(\d+)\b/g,'<span style="color:#F59E0B;">$1</span>')
         .replace(/\b(true|false)\b/g,'<span style="color:#00B2B2;">$1</span>');
     }
-    function init(){ setMethod('GET'); }
-    return { init, setMethod, render:togglePayload, send };
+
+    function init(){
+      method='GET'; resource=null; getParam=null; postBody=null; calls=0;
+      obj1Done=false; obj2Done=false;
+      setMethod('GET');
+    }
+    return { init, setMethod, pickResource, pickParam, pickBody, send };
   })();
 
   /* ===================================================================
